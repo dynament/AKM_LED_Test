@@ -1810,6 +1810,10 @@ src/CMakeFiles/src.dir/main.c.obj
  C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/machine/_types.h
  C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/sys/lock.h
  C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/sys/stdio.h
+ C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/string.h
+ C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/sys/_locale.h
+ C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/strings.h
+ C:/VSARM/armcc/11.3 rel1/arm-none-eabi/include/sys/string.h
  C:/VSARM/sdk/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info.h
  C:/VSARM/sdk/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/defs.h
  C:/VSARM/sdk/pico/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/structure.h

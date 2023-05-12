@@ -61,6 +61,10 @@ src/CMakeFiles/src.dir/main.c.obj: \
  c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\machine\_types.h \
  c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\sys\lock.h \
  c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\sys\stdio.h \
+ c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\string.h \
+ c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\sys\_locale.h \
+ c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\strings.h \
+ c:\vsarm\armcc\1142da~1.3re\arm-none-eabi\include\sys\string.h \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info.h \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info/defs.h \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info/structure.h \
