@@ -61,30 +61,30 @@ const uint8_t CNTL9  = 0x17;    // Operating mode
 const uint8_t CNTL10 = 0x18;    // Soft reset
 
 // GPIO
-#define LED_PICO_PIN            25
-#define PWM_OUT_PIN             14
-#define SENSOR_CO2_I2C_SCL_PIN  13
-#define SENSOR_CO2_I2C_SDA_PIN  12
-#define SENSOR_CO2_PDN_PIN      15
-#define SENSOR_HC_I2C_SCL_PIN   11
-#define SENSOR_HC_I2C_SDA_PIN   10
-#define SENSOR_HC_PDN_PIN        9
-#define UART_PC_RX_PIN           1
-#define UART_PC_TX_PIN           0
+#define LED_PICO_PIN                        25
+#define PWM_OUT_PIN                         14
+#define SENSOR_CO2_ANGLED_I2C_SCL_PIN       11
+#define SENSOR_CO2_ANGLED_I2C_SDA_PIN       10
+#define SENSOR_CO2_ANGLED_PDN_PIN            9
+#define SENSOR_CO2_STRAIGHT_I2C_SCL_PIN     13
+#define SENSOR_CO2_STRAIGHT_I2C_SDA_PIN     12
+#define SENSOR_CO2_STRAIGHT_PDN_PIN         15
+#define UART_PC_RX_PIN                       1
+#define UART_PC_TX_PIN                       0
 
-#define LED_PICO_OFF            gpio_put ( LED_PICO_PIN       , 0 )
-#define LED_PICO_ON             gpio_put ( LED_PICO_PIN       , 1 )
-#define SENSOR_CO2_PDN_HIGH     gpio_put ( SENSOR_CO2_PDN_PIN , 1 )
-#define SENSOR_CO2_PDN_LOW      gpio_put ( SENSOR_CO2_PDN_PIN , 0 )
-#define SENSOR_HC_PDN_HIGH      gpio_put ( SENSOR_HC_PDN_PIN  , 1 )
-#define SENSOR_HC_PDN_LOW       gpio_put ( SENSOR_HC_PDN_PIN  , 0 )
+#define LED_PICO_OFF                    gpio_put ( LED_PICO_PIN                , 0 )
+#define LED_PICO_ON                     gpio_put ( LED_PICO_PIN                , 1 )
+#define SENSOR_CO2_ANGLED_PDN_HIGH      gpio_put ( SENSOR_CO2_ANGLED_PDN_PIN   , 1 )
+#define SENSOR_CO2_ANGLED_PDN_LOW       gpio_put ( SENSOR_CO2_ANGLED_PDN_PIN   , 0 )
+#define SENSOR_CO2_STRAIGHT_PDN_HIGH    gpio_put ( SENSOR_CO2_STRAIGHT_PDN_PIN , 1 )
+#define SENSOR_CO2_STRAIGHT_PDN_LOW     gpio_put ( SENSOR_CO2_STRAIGHT_PDN_PIN , 0 )
 
 // I2C
-#define I2C_BAUD_RATE           100 // kHz
-#define I2C_BUFFER_LENGTH       10
-#define SENSOR_CO2_I2C          i2c0
-#define SENSOR_HC_I2C           i2c1
-#define SENSOR_ADDRESS          0x65
+#define I2C_BAUD_RATE               100 // kHz
+#define I2C_BUFFER_LENGTH           10
+#define SENSOR_CO2_STRAIGHT_I2C     i2c0
+#define SENSOR_CO2_ANGLED_I2C       i2c1
+#define SENSOR_ADDRESS              0x65
 
 // UART
 #define DATA_BITS           8

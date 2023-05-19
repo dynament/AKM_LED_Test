@@ -17,8 +17,7 @@ const uint16_t TIMEOUT = 5000;
 
 uint8_t LED_OnTime              ( uint16_t led_on_time );
 uint8_t LED_SetCurrent          ( uint8_t  led_current );
-uint8_t Sensor_DataReady_CO2    ( void );
-uint8_t Sensor_DataReady_HC     ( void );
+uint8_t Sensor_DataReady        ( void );
 uint8_t Set_NumberMeasurements  ( uint8_t num_measurements );   // Number of measurements per cycle
 void    Sensor_GetData          ( void );
 void    Sensor_GetLED_Voltage   ( void );
@@ -27,17 +26,17 @@ void    Sensor_Init             ( void );
 void    Sensor_SoftReset        ( void );
 void    Sensor_StartMeasurement ( void );
 
-float    CO2_LED_Voltage_Display = 0;
-float    HC_LED_Voltage_Display  = 0;
-int16_t  CO2_LED_Voltage         = 0;
-int16_t  CO2_Temperature         = 0;
-int16_t  HC_LED_Voltage          = 0;
-int16_t  HC_Temperature          = 0;
-int32_t  CO2_DET_Reading         = 0;
-int32_t  CO2_REF_Reading         = 0;
-int32_t  HC_DET_Reading          = 0;
-int32_t  HC_REF_Reading          = 0;
-uint16_t Timeout                 = 0;
+float    CO2_ANGLED_LED_Voltage_Display   = 0;
+float    CO2_STRAIGHT_LED_Voltage_Display = 0;
+int16_t  CO2_ANGLED_LED_Voltage           = 0;
+int16_t  CO2_ANGLED_Temperature           = 0;
+int16_t  CO2_STRAIGHT_LED_Voltage         = 0;
+int16_t  CO2_STRAIGHT_Temperature         = 0;
+int32_t  CO2_ANGLED_DET_Reading           = 0;
+int32_t  CO2_ANGLED_REF_Reading           = 0;
+int32_t  CO2_STRAIGHT_DET_Reading         = 0;
+int32_t  CO2_STRAIGHT_REF_Reading         = 0;
+uint16_t Timeout                          = 0;
 
 struct repeating_timer timer_heartbeat;
 struct repeating_timer timer_millisec;
@@ -78,34 +77,34 @@ void main ( void )
     stdio_init_all();
 
     // GPIO
-    gpio_init    ( LED_PICO_PIN       );
-    gpio_init    ( PWM_OUT_PIN        );
-    gpio_init    ( SENSOR_CO2_PDN_PIN );
-    gpio_init    ( SENSOR_HC_PDN_PIN  );
-    gpio_set_dir ( LED_PICO_PIN       , GPIO_OUT );
-    gpio_set_dir ( PWM_OUT_PIN        , GPIO_OUT );
-    gpio_set_dir ( SENSOR_CO2_PDN_PIN , GPIO_OUT );
-    gpio_set_dir ( SENSOR_HC_PDN_PIN  , GPIO_OUT );
+    gpio_init    ( LED_PICO_PIN                );
+    gpio_init    ( PWM_OUT_PIN                 );
+    gpio_init    ( SENSOR_CO2_ANGLED_PDN_PIN   );
+    gpio_init    ( SENSOR_CO2_STRAIGHT_PDN_PIN );
+    gpio_set_dir ( LED_PICO_PIN                 , GPIO_OUT );
+    gpio_set_dir ( PWM_OUT_PIN                  , GPIO_OUT );
+    gpio_set_dir ( SENSOR_CO2_ANGLED_PDN_PIN    , GPIO_OUT );
+    gpio_set_dir ( SENSOR_CO2_STRAIGHT_PDN_PIN  , GPIO_OUT );
 
     LED_PICO_OFF;
-    SENSOR_CO2_PDN_LOW;
-    SENSOR_HC_PDN_LOW;
+    SENSOR_CO2_ANGLED_PDN_LOW;
+    SENSOR_CO2_STRAIGHT_PDN_LOW;
     gpio_put ( PWM_OUT_PIN , 0 );
 
     add_repeating_timer_ms ( 500 , timer_heartbeat_isr , NULL , &timer_heartbeat );
     add_repeating_timer_ms (   1 , timer_millisec_isr  , NULL , &timer_millisec  );
 
     // I2C
-    gpio_set_function ( SENSOR_CO2_I2C_SDA_PIN , GPIO_FUNC_I2C );
-    gpio_set_function ( SENSOR_CO2_I2C_SCL_PIN , GPIO_FUNC_I2C );
-    gpio_pull_up      ( SENSOR_CO2_I2C_SDA_PIN );
-    gpio_pull_up      ( SENSOR_CO2_I2C_SCL_PIN );
-    i2c_init          ( SENSOR_CO2_I2C , I2C_BAUD_RATE * 1000 );
-    gpio_set_function ( SENSOR_HC_I2C_SDA_PIN , GPIO_FUNC_I2C );
-    gpio_set_function ( SENSOR_HC_I2C_SCL_PIN , GPIO_FUNC_I2C );
-    gpio_pull_up      ( SENSOR_HC_I2C_SDA_PIN );
-    gpio_pull_up      ( SENSOR_HC_I2C_SCL_PIN );
-    i2c_init          ( SENSOR_HC_I2C , I2C_BAUD_RATE * 1000 );
+    gpio_set_function ( SENSOR_CO2_ANGLED_I2C_SDA_PIN , GPIO_FUNC_I2C );
+    gpio_set_function ( SENSOR_CO2_ANGLED_I2C_SCL_PIN , GPIO_FUNC_I2C );
+    gpio_pull_up      ( SENSOR_CO2_ANGLED_I2C_SDA_PIN );
+    gpio_pull_up      ( SENSOR_CO2_ANGLED_I2C_SCL_PIN );
+    i2c_init          ( SENSOR_CO2_ANGLED_I2C , I2C_BAUD_RATE * 1000 );
+    gpio_set_function ( SENSOR_CO2_STRAIGHT_I2C_SDA_PIN , GPIO_FUNC_I2C );
+    gpio_set_function ( SENSOR_CO2_STRAIGHT_I2C_SCL_PIN , GPIO_FUNC_I2C );
+    gpio_pull_up      ( SENSOR_CO2_STRAIGHT_I2C_SDA_PIN );
+    gpio_pull_up      ( SENSOR_CO2_STRAIGHT_I2C_SCL_PIN );
+    i2c_init          ( SENSOR_CO2_STRAIGHT_I2C , I2C_BAUD_RATE * 1000 );
 
     // UART
     uart_init         ( UART_PC         , UART_BAUD_RATE );
@@ -130,11 +129,11 @@ void main ( void )
     PWM_DC = 0;
 	sleep_ms ( 1000 );
 
-    SENSOR_CO2_PDN_HIGH;
-    SENSOR_HC_PDN_HIGH;
+    SENSOR_CO2_ANGLED_PDN_HIGH;
+    SENSOR_CO2_STRAIGHT_PDN_HIGH;
 
-    Sensor_SoftReset ( );
-    Sensor_Init ( );
+    // Sensor_SoftReset ( );
+    // Sensor_Init ( );
 
     for ( ; ; )
     {
@@ -142,20 +141,13 @@ void main ( void )
         Timeout   = TIMEOUT;
         memset ( I2C_RX_Buffer , 0 , sizeof ( I2C_RX_Buffer ) );
 
-        // Sensor_SoftReset ( );
-        // Sensor_Init ( );
+        sleep_ms ( 10 );
+        Sensor_SoftReset ( );
+        Sensor_Init ( );
         Sensor_StartMeasurement ( );
-        sleep_ms ( 500 );
+        sleep_ms ( 550 );
 
-        while ( Timeout && !DataReady )
-        {
-            DataReady = Sensor_DataReady_CO2 ( );
-        }
-
-        // while ( Timeout && !DataReady )
-        // {
-            // DataReady = Sensor_DataReady_HC ( );
-        // }
+        DataReady = Sensor_DataReady ( );
 
         Sensor_GetData          ( );
         Sensor_GetLED_Voltage   ( );
@@ -170,26 +162,23 @@ void main ( void )
             // Nothing to do
         }
 
-        CO2_LED_Voltage_Display = ( float ) ( ( CO2_LED_Voltage * 0.0458 ) + 1399.9 );
-        HC_LED_Voltage_Display  = ( float ) ( ( HC_LED_Voltage  * 0.0458 ) + 1399.9 );
+        CO2_ANGLED_LED_Voltage_Display   = ( float ) ( ( CO2_ANGLED_LED_Voltage    * 0.0458 ) + 1399.9 );
+        CO2_STRAIGHT_LED_Voltage_Display = ( float ) ( ( CO2_STRAIGHT_LED_Voltage  * 0.0458 ) + 1399.9 );
 
         PWM_DC -= 10000;
         pwm_set_chan_level ( slice_num , channel , ( uint16_t ) PWM_DC );
-        printf ( "PWM_DC            = %lu\n"    , PWM_DC            );
-        printf ( "Time taken        = %i\n"     , TIMEOUT - Timeout );
-        printf ( "Timeout remaining = %i\n"     , Timeout           );
-        printf ( "CO2_DET_Reading   = 0x%06x\n" , CO2_DET_Reading   );
-        printf ( "CO2_REF_Reading   = 0x%06x\n" , CO2_REF_Reading   );
-        printf ( "CO2_Temperature   = 0x%04x\n" , CO2_Temperature   );
-        // printf ( "CO2_LED_Voltage   = 0x%04x\n" , CO2_LED_Voltage   );
-        printf ( "CO2_LED_Voltage   = %f\n"     , CO2_LED_Voltage_Display   );
-        // printf ( "HC_DET_Reading    = 0x%06x\n" , HC_DET_Reading    );
-        // printf ( "HC_REF_Reading    = 0x%06x\n" , HC_REF_Reading    );
-        // printf ( "HC_Temperature    = 0x%04x\n" , HC_Temperature    );
-        // printf ( "HC_LED_Voltage    = 0x%04x\n" , HC_LED_Voltage    );
-        // printf ( "HC_LED_Voltage    = %f\n"     , HC_LED_Voltage_Display    );
+        // printf ( "PWM_DC                   = %lu\n"    , PWM_DC            );
+        printf ( "Time taken               = %i\n"     , TIMEOUT - Timeout );
+        printf ( "Timeout remaining        = %i\n"     , Timeout           );
+        printf ( "CO2_ANGLED_DET_Reading   = 0x%06x\n" , CO2_ANGLED_DET_Reading   );
+        // printf ( "CO2_ANGLED_REF_Reading   = 0x%06x\n" , CO2_ANGLED_REF_Reading   );
+        // printf ( "CO2_ANGLED_Temperature   = 0x%04x\n" , CO2_ANGLED_Temperature   );
+        printf ( "CO2_ANGLED_LED_Voltage   = %f\n"     , CO2_ANGLED_LED_Voltage_Display   );
+        printf ( "CO2_STRAIGHT_DET_Reading = 0x%06x\n" , CO2_STRAIGHT_DET_Reading    );
+        // printf ( "CO2_STRAIGHT_REF_Reading = 0x%06x\n" , CO2_STRAIGHT_REF_Reading    );
+        // printf ( "CO2_STRAIGHT_Temperature = 0x%04x\n" , CO2_STRAIGHT_Temperature    );
+        printf ( "CO2_STRAIGHT_LED_Voltage = %f\n"     , CO2_STRAIGHT_LED_Voltage_Display    );
 
-        sleep_ms ( 100 );
     }
 }
 
@@ -235,13 +224,15 @@ uint8_t LED_SetCurrent   ( uint8_t  led_current )
     return LED_Current;
 }
 
-uint8_t Sensor_DataReady_CO2 ( void )
+uint8_t Sensor_DataReady ( void )
 {
     uint8_t DataReady = 0;
     uint8_t RX_Buffer [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , &STATUS   , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_I2C , SENSOR_ADDRESS , RX_Buffer , 1 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &STATUS       , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer     , 1 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &STATUS       , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer + 1 , 1 , false );
 
     if ( RX_Buffer [ 0 ] & ( 1 << 0 ) )
     {
@@ -252,20 +243,9 @@ uint8_t Sensor_DataReady_CO2 ( void )
         // Nothing to do
     }
 
-    return DataReady;
-}
-
-uint8_t Sensor_DataReady_HC ( void )
-{
-    uint8_t DataReady = 0;
-    uint8_t RX_Buffer [ 2 ] = { 0 , 0 };
-
-    i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , &STATUS   , 1 , true  );
-    i2c_read_blocking  ( SENSOR_HC_I2C  , SENSOR_ADDRESS , RX_Buffer , 1 , false );
-
-    if ( RX_Buffer [ 0 ] & ( 1 << 0 ) )
+    if ( RX_Buffer [ 1 ] & ( 1 << 0 ) )
     {
-        DataReady = 1;
+        DataReady |= 1 << 1;
     }
     else
     {
@@ -277,46 +257,46 @@ uint8_t Sensor_DataReady_HC ( void )
 
 void Sensor_GetData ( void )
 {
-    uint8_t RX_Buffer_CO2 [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
-    uint8_t RX_Buffer_HC  [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
+    uint8_t RX_Buffer_CO2_Angled   [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
+    uint8_t RX_Buffer_CO2_Straight [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , &IR1L         , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_I2C , SENSOR_ADDRESS , RX_Buffer_CO2 , 6 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , &IR1L         , 1 , true  );
-    // i2c_read_blocking  ( SENSOR_HC_I2C  , SENSOR_ADDRESS , RX_Buffer_HC  , 6 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &IR1L                  , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 6 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &IR1L                  , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 6 , false );
 
-    CO2_DET_Reading = ( int32_t ) ( ( RX_Buffer_CO2 [ 2 ] << 16 ) + ( RX_Buffer_CO2 [ 1 ] << 8 ) + RX_Buffer_CO2 [ 0 ] );
-    CO2_REF_Reading = ( int32_t ) ( ( RX_Buffer_CO2 [ 5 ] << 16 ) + ( RX_Buffer_CO2 [ 4 ] << 8 ) + RX_Buffer_CO2 [ 3 ] );
-    HC_DET_Reading  = ( int32_t ) ( ( RX_Buffer_HC  [ 2 ] << 16 ) + ( RX_Buffer_HC  [ 1 ] << 8 ) + RX_Buffer_HC  [ 0 ] );
-    HC_REF_Reading  = ( int32_t ) ( ( RX_Buffer_HC  [ 5 ] << 16 ) + ( RX_Buffer_HC  [ 4 ] << 8 ) + RX_Buffer_HC  [ 3 ] );
+    CO2_ANGLED_DET_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 2 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    CO2_ANGLED_REF_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 5 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 8 ) + RX_Buffer_CO2_Angled   [ 3 ] );
+    CO2_STRAIGHT_DET_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 2 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    CO2_STRAIGHT_REF_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 5 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 8 ) + RX_Buffer_CO2_Straight [ 3 ] );
 }
 
 void Sensor_GetLED_Voltage ( void )
 {
-    uint8_t RX_Buffer_CO2 [ 2 ] = { 0 , 0 };
-    uint8_t RX_Buffer_HC  [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer_CO2_Angled   [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer_CO2_Straight [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , &VFL          , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_I2C , SENSOR_ADDRESS , RX_Buffer_CO2 , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , &VFL          , 1 , true  );
-    // i2c_read_blocking  ( SENSOR_HC_I2C  , SENSOR_ADDRESS , RX_Buffer_HC  , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &VFL                   , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &VFL                   , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
 
-    CO2_LED_Voltage = ( int16_t ) ( ( RX_Buffer_CO2 [ 1 ] << 8 ) + RX_Buffer_CO2 [ 0 ] );
-    HC_LED_Voltage  = ( int16_t ) ( ( RX_Buffer_HC  [ 1 ] << 8 ) + RX_Buffer_HC  [ 0 ] );
+    CO2_ANGLED_LED_Voltage   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    CO2_STRAIGHT_LED_Voltage = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
 }
 
 void Sensor_GetTemperature ( void )
 {
-    uint8_t RX_Buffer_CO2 [ 2 ] = { 0 , 0 };
-    uint8_t RX_Buffer_HC  [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer_CO2_Angled   [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer_CO2_Straight [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , &TMPL         , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_I2C , SENSOR_ADDRESS , RX_Buffer_CO2 , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , &TMPL         , 1 , true  );
-    // i2c_read_blocking  ( SENSOR_HC_I2C  , SENSOR_ADDRESS , RX_Buffer_HC  , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &TMPL                  , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &TMPL                  , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
 
-    CO2_Temperature = ( int16_t ) ( ( RX_Buffer_CO2 [ 1 ] << 8 ) + RX_Buffer_CO2 [ 0 ] );
-    HC_Temperature  = ( int16_t ) ( ( RX_Buffer_HC  [ 1 ] << 8 ) + RX_Buffer_HC  [ 0 ] );
+    CO2_ANGLED_Temperature   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    CO2_STRAIGHT_Temperature = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
 }
 
 void Sensor_Init ( void )
@@ -325,53 +305,53 @@ void Sensor_Init ( void )
 
     // Number of measurements per cycle
     I2C_TX_Buffer [ 0 ] = CNTL1;
-    I2C_TX_Buffer [ 1 ] = 0x03; // 8 measurements
-    // I2C_TX_Buffer [ 1 ] = 0x02; // 4 measurements
+    // I2C_TX_Buffer [ 1 ] = 0x03; // 8 measurements
+    I2C_TX_Buffer [ 1 ] = 0x02; // 4 measurements
     // I2C_TX_Buffer [ 1 ] = 0x01; // 2 measurements
     // I2C_TX_Buffer [ 1 ] = 0x00; // 1 measurement
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // Measurement time
     I2C_TX_Buffer [ 0 ] = CNTL2;
     // I2C_TX_Buffer [ 1 ] = 0xF7; // 500 ms
     // I2C_TX_Buffer [ 1 ] = 0x7A; // 250 ms
-    // I2C_TX_Buffer [ 1 ] = 0x3C; // 125 ms
-    I2C_TX_Buffer [ 1 ] = 0x1D; //  63 ms
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = 0x3C; // 125 ms
+    // I2C_TX_Buffer [ 1 ] = 0x1D; //  63 ms
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // LED integration ( pulse width ( 'on' ) ) time ( us )
     I2C_TX_Buffer [ 0 ] = CNTL3;
-    I2C_TX_Buffer [ 1 ] = LED_OnTime ( 500 );
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = LED_OnTime ( 1000 );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // Analogue setup
     I2C_TX_Buffer [ 0 ] = CNTL7;
-    I2C_TX_Buffer [ 1 ] = 0b00000000;    // [7] <NOT USED> , [6] IR2 resolution = x1 , [5] IR1 resolution = x1 , [4] IR2 SH gain = x0.5 , [3] IR1 range = 1000 mV , [2] IR1 SH gain = x1, [1:0] IR1 AFE gain = x2
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = 0b10000000;    // [7] <NOT USED> , [6] IR2 resolution = x1 , [5] IR1 resolution = x1 , [4] IR2 SH gain = x0.5 , [3] IR1 range = 1000 mV , [2] IR1 SH gain = x1, [1:0] IR1 AFE gain = x2
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // LED current ( mA )
     I2C_TX_Buffer [ 0 ] = CNTL8;
-    I2C_TX_Buffer [ 1 ] = LED_SetCurrent ( 28 );  // mA
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = LED_SetCurrent ( 100 );  // mA
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // Operating mode ( normal or test )
     I2C_TX_Buffer [ 0 ] = CNTL9;
     I2C_TX_Buffer [ 1 ] = 0x00; // Normal operating mode
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
 
 void Sensor_SoftReset ( void )
 {
     uint8_t I2C_TX_Buffer [ 2 ] = { CNTL10 , 0x01 };
 
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
 
 void Sensor_StartMeasurement ( void )
@@ -381,6 +361,6 @@ void Sensor_StartMeasurement ( void )
     // Measurement mode
     I2C_TX_Buffer [ 0 ] = CNTL6;
     I2C_TX_Buffer [ 1 ] = 0x02; // Single measurement mode
-    i2c_write_blocking ( SENSOR_CO2_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    // i2c_write_blocking ( SENSOR_HC_I2C  , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
