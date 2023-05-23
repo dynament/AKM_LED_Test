@@ -1167,6 +1167,30 @@ C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.s:
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\src.dir\build.make src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.s
 .PHONY : C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.s
 
+bme280.obj: bme280.c.obj
+.PHONY : bme280.obj
+
+# target to build an object file
+bme280.c.obj:
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\src.dir\build.make src/CMakeFiles/src.dir/bme280.c.obj
+.PHONY : bme280.c.obj
+
+bme280.i: bme280.c.i
+.PHONY : bme280.i
+
+# target to preprocess a source file
+bme280.c.i:
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\src.dir\build.make src/CMakeFiles/src.dir/bme280.c.i
+.PHONY : bme280.c.i
+
+bme280.s: bme280.c.s
+.PHONY : bme280.s
+
+# target to generate assembly for a file
+bme280.c.s:
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build && $(MAKE) $(MAKESILENT) -f src\CMakeFiles\src.dir\build.make src/CMakeFiles/src.dir/bme280.c.s
+.PHONY : bme280.c.s
+
 main.obj: main.c.obj
 .PHONY : main.obj
 
@@ -1329,6 +1353,9 @@ help:
 	@echo ... C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.obj
 	@echo ... C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.i
 	@echo ... C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/pico_stdlib/stdlib.s
+	@echo ... bme280.obj
+	@echo ... bme280.i
+	@echo ... bme280.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

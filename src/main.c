@@ -19,6 +19,7 @@ uint8_t LED_OnTime              ( uint16_t led_on_time );
 uint8_t LED_SetCurrent          ( uint8_t  led_current );
 uint8_t Sensor_DataReady        ( void );
 uint8_t Set_NumberMeasurements  ( uint8_t num_measurements );   // Number of measurements per cycle
+void    BME_GetData             ( void );
 void    Sensor_GetData          ( void );
 void    Sensor_GetLED_Voltage   ( void );
 void    Sensor_GetTemperature   ( void );
@@ -26,17 +27,22 @@ void    Sensor_Init             ( void );
 void    Sensor_SoftReset        ( void );
 void    Sensor_StartMeasurement ( void );
 
-float    CO2_ANGLED_LED_Voltage_Display   = 0;
-float    CO2_STRAIGHT_LED_Voltage_Display = 0;
-int16_t  CO2_ANGLED_LED_Voltage           = 0;
-int16_t  CO2_ANGLED_Temperature           = 0;
-int16_t  CO2_STRAIGHT_LED_Voltage         = 0;
-int16_t  CO2_STRAIGHT_Temperature         = 0;
-int32_t  CO2_ANGLED_DET_Reading           = 0;
-int32_t  CO2_ANGLED_REF_Reading           = 0;
-int32_t  CO2_STRAIGHT_DET_Reading         = 0;
-int32_t  CO2_STRAIGHT_REF_Reading         = 0;
-uint16_t Timeout                          = 0;
+typedef struct
+{
+    float    Sensor_LED_Voltage_Display;
+    int16_t  Sensor_LED_Voltage;
+    int16_t  Sensor_Temperature;
+    int32_t  Sensor_DET_Reading;
+    int32_t  Sensor_REF_Reading;
+    int32_t  BME_Pressure_Raw;
+    int32_t  BME_Temperature_Raw;
+    uint16_t BME_Humidity_Raw;
+} datastruct_t;
+
+uint16_t Timeout = 0;
+
+datastruct_t Angled;
+datastruct_t Straight;
 
 struct repeating_timer timer_heartbeat;
 struct repeating_timer timer_millisec;
@@ -135,10 +141,34 @@ void main ( void )
     // Sensor_SoftReset ( );
     // Sensor_Init ( );
 
+    I2C_RX_Buffer [ 0 ] = RESET;
+    I2C_RX_Buffer [ 1 ] = 0xB6;
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    
+    sleep_ms ( 100 );
+
+    I2C_RX_Buffer [ 0 ] = CONFIG;
+    I2C_RX_Buffer [ 1 ] = 0b01000000;
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+
+    I2C_RX_Buffer [ 0 ] = CTRL_HUM;
+    I2C_RX_Buffer [ 1 ] = 0b00000101;
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+
+    I2C_RX_Buffer [ 0 ] = CTRL_MEAS;
+    I2C_RX_Buffer [ 1 ] = 0b10110111;
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+
     for ( ; ; )
     {
         DataReady = 0;
         Timeout   = TIMEOUT;
+        memset ( &Angled       , 0 , sizeof ( Angled        ) );
+        memset ( &Straight     , 0 , sizeof ( Straight      ) );
         memset ( I2C_RX_Buffer , 0 , sizeof ( I2C_RX_Buffer ) );
 
         sleep_ms ( 10 );
@@ -153,6 +183,8 @@ void main ( void )
         Sensor_GetLED_Voltage   ( );
         Sensor_GetTemperature   ( );
 
+        BME_GetData ( );
+
         if ( PWM_DC == 0 )
         {
             PWM_DC = 70000;
@@ -162,23 +194,20 @@ void main ( void )
             // Nothing to do
         }
 
-        CO2_ANGLED_LED_Voltage_Display   = ( float ) ( ( CO2_ANGLED_LED_Voltage    * 0.0458 ) + 1399.9 );
-        CO2_STRAIGHT_LED_Voltage_Display = ( float ) ( ( CO2_STRAIGHT_LED_Voltage  * 0.0458 ) + 1399.9 );
+        Angled.Sensor_LED_Voltage_Display   = ( float ) ( ( Angled.Sensor_LED_Voltage    * 0.0458 ) + 1399.9 );
+        Straight.Sensor_LED_Voltage_Display = ( float ) ( ( Straight.Sensor_LED_Voltage  * 0.0458 ) + 1399.9 );
 
         PWM_DC -= 10000;
         pwm_set_chan_level ( slice_num , channel , ( uint16_t ) PWM_DC );
-        // printf ( "PWM_DC                   = %lu\n"    , PWM_DC            );
-        printf ( "Time taken               = %i\n"     , TIMEOUT - Timeout );
-        printf ( "Timeout remaining        = %i\n"     , Timeout           );
-        printf ( "CO2_ANGLED_DET_Reading   = 0x%06x\n" , CO2_ANGLED_DET_Reading   );
-        // printf ( "CO2_ANGLED_REF_Reading   = 0x%06x\n" , CO2_ANGLED_REF_Reading   );
-        // printf ( "CO2_ANGLED_Temperature   = 0x%04x\n" , CO2_ANGLED_Temperature   );
-        printf ( "CO2_ANGLED_LED_Voltage   = %f\n"     , CO2_ANGLED_LED_Voltage_Display   );
-        printf ( "CO2_STRAIGHT_DET_Reading = 0x%06x\n" , CO2_STRAIGHT_DET_Reading    );
-        // printf ( "CO2_STRAIGHT_REF_Reading = 0x%06x\n" , CO2_STRAIGHT_REF_Reading    );
-        // printf ( "CO2_STRAIGHT_Temperature = 0x%04x\n" , CO2_STRAIGHT_Temperature    );
-        printf ( "CO2_STRAIGHT_LED_Voltage = %f\n"     , CO2_STRAIGHT_LED_Voltage_Display    );
 
+        printf ( "Time taken                   = %i\n"     , TIMEOUT - Timeout            );
+        printf ( "Timeout remaining            = %i\n"     , Timeout                      );
+        printf ( "Angled   BME Humidity    raw = 0x%04x\n" , Angled.BME_Humidity_Raw      );
+        printf ( "Angled   BME Pressure    raw = 0x%05x\n" , Angled.BME_Pressure_Raw      );
+        printf ( "Angled   BME Temperature raw = 0x%05x\n" , Angled.BME_Temperature_Raw   );
+        printf ( "Straight BME Humidity    raw = 0x%04x\n" , Straight.BME_Humidity_Raw    );
+        printf ( "Straight BME Pressure    raw = 0x%05x\n" , Straight.BME_Pressure_Raw    );
+        printf ( "Straight BME Temperature raw = 0x%05x\n" , Straight.BME_Temperature_Raw );
     }
 }
 
@@ -255,6 +284,30 @@ uint8_t Sensor_DataReady ( void )
     return DataReady;
 }
 
+void BME_GetData ( void )
+{
+    uint8_t RX_Buffer_CO2_Angled   [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
+    uint8_t RX_Buffer_CO2_Straight [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
+
+    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , RX_Buffer_CO2_Angled   , 8 , false );
+    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
+    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , RX_Buffer_CO2_Straight , 8 , false );
+
+    Angled.BME_Humidity_Raw      = 0;
+    Angled.BME_Pressure_Raw      = 0;
+    Angled.BME_Temperature_Raw   = 0;
+    Angled.BME_Humidity_Raw      = ( uint16_t ) ( ( RX_Buffer_CO2_Angled   [ 6 ] <<  8 ) +   RX_Buffer_CO2_Angled   [ 7 ] );
+    Angled.BME_Pressure_Raw      = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 0 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 2 ] & 0xF0 ) >> 4 ) );
+    Angled.BME_Temperature_Raw   = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 3 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 5 ] & 0xF0 ) >> 4 ) );
+    Straight.BME_Humidity_Raw    = 0;
+    Straight.BME_Pressure_Raw    = 0;
+    Straight.BME_Temperature_Raw = 0;
+    Straight.BME_Humidity_Raw    = ( uint16_t ) ( ( RX_Buffer_CO2_Straight [ 6 ] <<  8 ) +   RX_Buffer_CO2_Straight [ 7 ] );
+    Straight.BME_Pressure_Raw    = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 0 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 2 ] & 0xF0 ) >> 4 ) );
+    Straight.BME_Temperature_Raw = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 3 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 5 ] & 0xF0 ) >> 4 ) );
+}
+
 void Sensor_GetData ( void )
 {
     uint8_t RX_Buffer_CO2_Angled   [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
@@ -265,10 +318,10 @@ void Sensor_GetData ( void )
     i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &IR1L                  , 1 , true  );
     i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 6 , false );
 
-    CO2_ANGLED_DET_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 2 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    CO2_ANGLED_REF_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 5 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 8 ) + RX_Buffer_CO2_Angled   [ 3 ] );
-    CO2_STRAIGHT_DET_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 2 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
-    CO2_STRAIGHT_REF_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 5 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 8 ) + RX_Buffer_CO2_Straight [ 3 ] );
+    Angled.Sensor_DET_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 2 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    Angled.Sensor_REF_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 5 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 8 ) + RX_Buffer_CO2_Angled   [ 3 ] );
+    Straight.Sensor_DET_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 2 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    Straight.Sensor_REF_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 5 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 8 ) + RX_Buffer_CO2_Straight [ 3 ] );
 }
 
 void Sensor_GetLED_Voltage ( void )
@@ -281,8 +334,8 @@ void Sensor_GetLED_Voltage ( void )
     i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &VFL                   , 1 , true  );
     i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
 
-    CO2_ANGLED_LED_Voltage   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    CO2_STRAIGHT_LED_Voltage = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    Angled.Sensor_LED_Voltage   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    Straight.Sensor_LED_Voltage = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
 }
 
 void Sensor_GetTemperature ( void )
@@ -295,8 +348,8 @@ void Sensor_GetTemperature ( void )
     i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &TMPL                  , 1 , true  );
     i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
 
-    CO2_ANGLED_Temperature   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    CO2_STRAIGHT_Temperature = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    Angled.Sensor_Temperature   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
+    Straight.Sensor_Temperature = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
 }
 
 void Sensor_Init ( void )

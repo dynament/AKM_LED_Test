@@ -36,6 +36,7 @@
 #define WATCHDOG_MILLISECONDS   8000    // Maximum 8 300 ms
 
 // AK9723 addresses
+// 0x05 to 0x0E - Burst read , 2's complement 16-bit signed integer
 const uint8_t WIA1   = 0x00;    // Company code - 0x48
 const uint8_t WIA2   = 0x01;    // Device ID - 0x23
 const uint8_t STATUS = 0x04;    // Flags - [7:3] <NOT USED> ; [2] OVCUR_DET ; [1] ERR_FLAG ; [0] DRDY
@@ -60,6 +61,24 @@ const uint8_t CNTL8  = 0x16;    // LED current setting
 const uint8_t CNTL9  = 0x17;    // Operating mode
 const uint8_t CNTL10 = 0x18;    // Soft reset
 
+// BME280 addresses
+// 0xF7 to 0xFE - Burst read , 20bit unsigned pressure & temperature , 16-bit unsigned humidity
+const uint8_t MID        = 0xD0;    // Manufacturer ID - 0x60
+const uint8_t RESET      = 0xE0;    // Soft reset
+const uint8_t CTRL_HUM   = 0xF2;    // [7:3] NOT USED , [2:0] Humidity oversampling
+const uint8_t STATUS_BME = 0xF3;    // [7:4] NOT USED , [3] Conversion running flag , [2:1] NOT USED , [0] NVM data copy in progrss flag
+const uint8_t CTRL_MEAS  = 0xF4;    // [7:5] Pressure oversampling , [4:2] Temperature oversampling , [1:0] Mode ( 00 sleep , 01 & 10 forced , 11 normal )
+const uint8_t CONFIG     = 0xF5;    // [7:5] Inatctive duration ( Tstandby ) , [4:2] IIR filter coefficient , [1] NOT USED , [0] 3-wire SPI enable
+const uint8_t PRESS_MSB  = 0xF7;    // MSB  - [19:12] Raw pressure measurement
+const uint8_t PRESS_LSB  = 0xF8;    // LSB  - [11: 4] Raw pressure measurement
+const uint8_t PRESS_XLSB = 0xF9;    // XLSB - [ 3: 0] Raw pressure measurement - [7:4] Data , [3:0] NOT USED
+const uint8_t TEMP_MSB   = 0xFA;    // MSB  - [19:12] Raw temperature measurement
+const uint8_t TEMP_LSB   = 0xFB;    // LSB  - [11: 4] Raw temperature measurement
+const uint8_t TEMP_XLSB  = 0xFC;    // XLSB - [ 3: 0] Raw temperature measurement - [7:4] Data , [3:0] NOT USED
+const uint8_t HUM_MSB    = 0xFD;    // MSB  - [15: 8] Raw humidity measurement
+const uint8_t HUM_LSB    = 0xFE;    // LSB  - [ 7: 0] Raw humidity measurement
+
+
 // GPIO
 #define LED_PICO_PIN                        25
 #define PWM_OUT_PIN                         14
@@ -80,6 +99,7 @@ const uint8_t CNTL10 = 0x18;    // Soft reset
 #define SENSOR_CO2_STRAIGHT_PDN_LOW     gpio_put ( SENSOR_CO2_STRAIGHT_PDN_PIN , 0 )
 
 // I2C
+#define BME_ADDRESS                 0x76
 #define I2C_BAUD_RATE               100 // kHz
 #define I2C_BUFFER_LENGTH           10
 #define SENSOR_CO2_STRAIGHT_I2C     i2c0
