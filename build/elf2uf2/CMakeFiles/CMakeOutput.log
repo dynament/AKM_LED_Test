@@ -48,36 +48,36 @@ Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" p
 The CXX compiler identification is MSVC, found in "C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/3.25.0-rc2/CompilerIdCXX/CMakeCXXCompilerId.exe"
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-902ngo
+Change Dir: C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kpb37b
 
-Run Build Command(s):C:/VSARM/mingw/mingw32/bin/mingw32-make.exe -f Makefile cmTC_906af/fast && mingw32-make.exe[3]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-902ngo'
-C:/VSARM/mingw/mingw32/bin/mingw32-make.exe  -f CMakeFiles\cmTC_906af.dir\build.make CMakeFiles/cmTC_906af.dir/build
-mingw32-make.exe[4]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-902ngo'
-Building C object CMakeFiles/cmTC_906af.dir/CMakeCCompilerABI.c.obj
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_906af.dir\CMakeCCompilerABI.c.obj.d --working-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-902ngo --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\cmTC_906af.dir\CMakeCCompilerABI.c.obj /FdCMakeFiles\cmTC_906af.dir/ /FS -c "C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCCompilerABI.c"
+Run Build Command(s):C:/VSARM/mingw/mingw32/bin/mingw32-make.exe -f Makefile cmTC_7889a/fast && mingw32-make.exe[3]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kpb37b'
+C:/VSARM/mingw/mingw32/bin/mingw32-make.exe  -f CMakeFiles\cmTC_7889a.dir\build.make CMakeFiles/cmTC_7889a.dir/build
+mingw32-make.exe[4]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kpb37b'
+Building C object CMakeFiles/cmTC_7889a.dir/CMakeCCompilerABI.c.obj
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_7889a.dir\CMakeCCompilerABI.c.obj.d --working-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-kpb37b --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\cmTC_7889a.dir\CMakeCCompilerABI.c.obj /FdCMakeFiles\cmTC_7889a.dir/ /FS -c "C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCCompilerABI.c"
 CMakeCCompilerABI.c
-Linking C executable cmTC_906af.exe
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_906af.dir\link.txt --verbose=1
-"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_906af.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_906af.dir\objects1  /out:cmTC_906af.exe /implib:cmTC_906af.lib /pdb:C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-902ngo\cmTC_906af.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
-mingw32-make.exe[4]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-902ngo'
-mingw32-make.exe[3]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-902ngo'
+Linking C executable cmTC_7889a.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_7889a.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_7889a.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_7889a.dir\objects1  /out:cmTC_7889a.exe /implib:cmTC_7889a.lib /pdb:C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-kpb37b\cmTC_7889a.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
+mingw32-make.exe[4]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kpb37b'
+mingw32-make.exe[3]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kpb37b'
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-uhb0jp
+Change Dir: C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kgy3no
 
-Run Build Command(s):C:/VSARM/mingw/mingw32/bin/mingw32-make.exe -f Makefile cmTC_bf9df/fast && mingw32-make.exe[3]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-uhb0jp'
-C:/VSARM/mingw/mingw32/bin/mingw32-make.exe  -f CMakeFiles\cmTC_bf9df.dir\build.make CMakeFiles/cmTC_bf9df.dir/build
-mingw32-make.exe[4]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-uhb0jp'
-Building CXX object CMakeFiles/cmTC_bf9df.dir/CMakeCXXCompilerABI.cpp.obj
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_bf9df.dir\CMakeCXXCompilerABI.cpp.obj.d --working-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-uhb0jp --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\cmTC_bf9df.dir\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\cmTC_bf9df.dir/ /FS -c "C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXCompilerABI.cpp"
+Run Build Command(s):C:/VSARM/mingw/mingw32/bin/mingw32-make.exe -f Makefile cmTC_3d93d/fast && mingw32-make.exe[3]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kgy3no'
+C:/VSARM/mingw/mingw32/bin/mingw32-make.exe  -f CMakeFiles\cmTC_3d93d.dir\build.make CMakeFiles/cmTC_3d93d.dir/build
+mingw32-make.exe[4]: Entering directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kgy3no'
+Building CXX object CMakeFiles/cmTC_3d93d.dir/CMakeCXXCompilerABI.cpp.obj
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\cmTC_3d93d.dir\CMakeCXXCompilerABI.cpp.obj.d --working-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-kgy3no --filter-prefix="Note: including file: " -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Zi /Ob0 /Od /RTC1 /showIncludes /FoCMakeFiles\cmTC_3d93d.dir\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\cmTC_3d93d.dir/ /FS -c "C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXCompilerABI.cpp"
 CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_bf9df.exe
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_bf9df.dir\link.txt --verbose=1
-"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_bf9df.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_bf9df.dir\objects1  /out:cmTC_bf9df.exe /implib:cmTC_bf9df.lib /pdb:C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-uhb0jp\cmTC_bf9df.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
-mingw32-make.exe[4]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-uhb0jp'
-mingw32-make.exe[3]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-uhb0jp'
+Linking CXX executable cmTC_3d93d.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_3d93d.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_3d93d.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2022\BUILDT~1\VC\Tools\MSVC\1435~1.322\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\cmTC_3d93d.dir\objects1  /out:cmTC_3d93d.exe /implib:cmTC_3d93d.lib /pdb:C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\elf2uf2\CMakeFiles\CMakeScratch\TryCompile-kgy3no\cmTC_3d93d.pdb /version:0.0 /machine:X86  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
+mingw32-make.exe[4]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kgy3no'
+mingw32-make.exe[3]: Leaving directory 'C:/Users/craig.hemingway/VisualCode_Workspace/AKM_LED_Test/build/elf2uf2/CMakeFiles/CMakeScratch/TryCompile-kgy3no'
 
 
 
