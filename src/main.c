@@ -25,35 +25,35 @@ typedef struct
     uint16_t BME_Humidity_Raw;
 } datastruct_t;
 
-struct bmp280_calib_param {
-    // temperature params
-    uint16_t dig_t1;
-    int16_t dig_t2;
-    int16_t dig_t3;
+// struct bmp280_calib_param {
+//     // temperature params
+//     uint16_t dig_t1;
+//     int16_t dig_t2;
+//     int16_t dig_t3;
 
-    // pressure params
-    uint16_t dig_p1;
-    int16_t dig_p2;
-    int16_t dig_p3;
-    int16_t dig_p4;
-    int16_t dig_p5;
-    int16_t dig_p6;
-    int16_t dig_p7;
-    int16_t dig_p8;
-    int16_t dig_p9;
+//     // pressure params
+//     uint16_t dig_p1;
+//     int16_t dig_p2;
+//     int16_t dig_p3;
+//     int16_t dig_p4;
+//     int16_t dig_p5;
+//     int16_t dig_p6;
+//     int16_t dig_p7;
+//     int16_t dig_p8;
+//     int16_t dig_p9;
 
-    // humidity params
-    uint8_t dig_h1;
-    int16_t dig_h2;
-    uint8_t dig_h3;
-    int16_t dig_h4;
-    int16_t dig_h5;
-    int8_t dig_h6;
+//     // humidity params
+//     uint8_t dig_h1;
+//     int16_t dig_h2;
+//     uint8_t dig_h3;
+//     int16_t dig_h4;
+//     int16_t dig_h5;
+//     int8_t dig_h6;
 
-    // Intermediate temperature coefficient
-    int32_t t_fine;
+//     // Intermediate temperature coefficient
+//     int32_t t_fine;
 
-};
+// };
 
 const uint16_t TIMEOUT = 5000;
 
@@ -61,7 +61,7 @@ uint8_t LED_OnTime              ( uint16_t led_on_time );
 uint8_t LED_SetCurrent          ( uint8_t  led_current );
 uint8_t Sensor_DataReady        ( void );
 uint8_t Set_NumberMeasurements  ( uint8_t num_measurements );   // Number of measurements per cycle
-void    BME_GetData             ( void );
+// void    BME_GetData             ( void );
 void    Sensor_GetData          ( void );
 void    Sensor_GetLED_Voltage   ( void );
 void    Sensor_GetTemperature   ( void );
@@ -69,18 +69,18 @@ void    Sensor_Init             ( void );
 void    Sensor_SoftReset        ( void );
 void    Sensor_StartMeasurement ( void );
 
-void bmp280_init(i2c_inst_t *i2c);
-void bmp280_read_raw(i2c_inst_t *i2c,int32_t* temp, int32_t* pressure,uint16_t* humidity);
-void bmp280_reset(i2c_inst_t *i2c);
-int32_t bmp280_convert(int32_t temp, struct bmp280_calib_param* params);
-int32_t bmp280_convert_temp(int32_t temp, struct bmp280_calib_param* params);
-int32_t bmp280_convert_pressure(int32_t pressure, struct bmp280_calib_param* params);
-uint32_t bmp280_convert_humidity(uint16_t humidity, struct bmp280_calib_param* params);
-void bmp280_get_calib_params(i2c_inst_t *i2c,struct bmp280_calib_param* params);
-// int32_t compensate_humidity(int32_t humidity,struct bme280_calib_param* params);
-static int32_t compensate_temperature(int32_t temperature_raw,struct bmp280_calib_param* calib_data);
-static uint32_t compensate_pressure(int32_t pressure_raw,const struct bmp280_calib_param* calib_data);
-static uint16_t compensate_humidity(uint16_t humidity_raw,const struct bmp280_calib_param* calib_data);
+// void bmp280_init(i2c_inst_t *i2c);
+// void bmp280_read_raw(i2c_inst_t *i2c,int32_t* temp, int32_t* pressure,uint16_t* humidity);
+// void bmp280_reset(i2c_inst_t *i2c);
+// int32_t bmp280_convert(int32_t temp, struct bmp280_calib_param* params);
+// int32_t bmp280_convert_temp(int32_t temp, struct bmp280_calib_param* params);
+// int32_t bmp280_convert_pressure(int32_t pressure, struct bmp280_calib_param* params);
+// uint32_t bmp280_convert_humidity(uint16_t humidity, struct bmp280_calib_param* params);
+// void bmp280_get_calib_params(i2c_inst_t *i2c,struct bmp280_calib_param* params);
+// // int32_t compensate_humidity(int32_t humidity,struct bme280_calib_param* params);
+// static int32_t compensate_temperature(int32_t temperature_raw,struct bmp280_calib_param* calib_data);
+// static uint32_t compensate_pressure(int32_t pressure_raw,const struct bmp280_calib_param* calib_data);
+// static uint16_t compensate_humidity(uint16_t humidity_raw,const struct bmp280_calib_param* calib_data);
 
 uint16_t Timeout = 0;
 // int32_t t_fine = 0;
@@ -89,8 +89,8 @@ datastruct_t Angled;
 datastruct_t Straight;
 
 // struct bme280_dev      BME_Struct;
-struct bmp280_calib_param Params_Angled;
-struct bmp280_calib_param Params_Straight;
+struct bme280_calib_param Params_Angled;
+struct bme280_calib_param Params_Straight;
 struct repeating_timer timer_heartbeat;
 struct repeating_timer timer_millisec;
 
@@ -128,7 +128,7 @@ void main ( void )
     int32_t  Raw_Temperature_Straight = 0;
     int32_t  Temperature_Angled     = 0;
     int32_t  Temperature_Straight     = 0;
-    uint8_t  I2C_RX_Buffer [ 10 ];
+    // uint8_t  I2C_RX_Buffer [ 10 ];
     uint8_t  DataReady       = 0;
     uint32_t PWM_DC          = 0xFFFF;
     uint16_t Humidity_Angled=0;
@@ -200,33 +200,34 @@ void main ( void )
 
     // Sensor_SoftReset ( );
     // Sensor_Init ( );
-
-    I2C_RX_Buffer [ 0 ] = RESET;
-    I2C_RX_Buffer [ 1 ] = 0xB6;
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+bme280_reset(SENSOR_CO2_ANGLED_I2C);
+bme280_reset(SENSOR_CO2_STRAIGHT_I2C);
+    // I2C_RX_Buffer [ 0 ] = RESET;
+    // I2C_RX_Buffer [ 1 ] = 0xB6;
+    // i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
     
-    sleep_ms ( 100 );
+    // sleep_ms ( 100 );
 
-    I2C_RX_Buffer [ 0 ] = CONFIG;
-    I2C_RX_Buffer [ 1 ] = 0b01000000;
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // I2C_RX_Buffer [ 0 ] = CONFIG;
+    // I2C_RX_Buffer [ 1 ] = 0b01000000;
+    // i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
 
-    I2C_RX_Buffer [ 0 ] = CTRL_HUM;
-    I2C_RX_Buffer [ 1 ] = 0b00000101;
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // I2C_RX_Buffer [ 0 ] = CTRL_HUM;
+    // I2C_RX_Buffer [ 1 ] = 0b00000101;
+    // i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
 
-    I2C_RX_Buffer [ 0 ] = CTRL_MEAS;
-    I2C_RX_Buffer [ 1 ] = 0b10110111;
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // I2C_RX_Buffer [ 0 ] = CTRL_MEAS;
+    // I2C_RX_Buffer [ 1 ] = 0b10110111;
+    // i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
+    // i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , I2C_RX_Buffer , 2 , false );
 
-    // bmp280_init(SENSOR_CO2_ANGLED_I2C);
-    // bmp280_init(SENSOR_CO2_STRAIGHT_I2C);
-    bmp280_get_calib_params(SENSOR_CO2_ANGLED_I2C,&Params_Angled);
-    bmp280_get_calib_params(SENSOR_CO2_STRAIGHT_I2C,&Params_Straight);
+    bme280_init(SENSOR_CO2_ANGLED_I2C);
+    bme280_init(SENSOR_CO2_STRAIGHT_I2C);
+    bme280_get_calib_params(SENSOR_CO2_ANGLED_I2C,&Params_Angled);
+    bme280_get_calib_params(SENSOR_CO2_STRAIGHT_I2C,&Params_Straight);
 
     for ( ; ; )
     {
@@ -234,7 +235,7 @@ void main ( void )
         Timeout   = TIMEOUT;
         memset ( &Angled       , 0 , sizeof ( Angled        ) );
         memset ( &Straight     , 0 , sizeof ( Straight      ) );
-        memset ( I2C_RX_Buffer , 0 , sizeof ( I2C_RX_Buffer ) );
+        // memset ( I2C_RX_Buffer , 0 , sizeof ( I2C_RX_Buffer ) );
 
         sleep_ms ( 10 );
         Sensor_SoftReset ( );
@@ -249,8 +250,8 @@ void main ( void )
         Sensor_GetTemperature   ( );
 
         // BME_GetData ( );
-        bmp280_read_raw ( SENSOR_CO2_ANGLED_I2C , &Raw_Temperature_Angled , &Raw_Pressure_Angled ,&Raw_Humidity_Angled);
-        bmp280_read_raw ( SENSOR_CO2_STRAIGHT_I2C , &Raw_Temperature_Straight , &Raw_Pressure_Straight ,&Raw_Humidity_Straight);
+        bme280_read_raw ( SENSOR_CO2_ANGLED_I2C , &Raw_Temperature_Angled , &Raw_Pressure_Angled ,&Raw_Humidity_Angled);
+        bme280_read_raw ( SENSOR_CO2_STRAIGHT_I2C , &Raw_Temperature_Straight , &Raw_Pressure_Straight ,&Raw_Humidity_Straight);
         // Temperature_Angled = bmp280_convert_temp     ( Raw_Temperature_Angled , &Params_Angled );
         // Temperature_Straight = bmp280_convert_temp     ( Raw_Temperature_Straight , &Params_Straight );
         Temperature_Angled=compensate_temperature(Raw_Temperature_Angled,&Params_Angled);
@@ -371,29 +372,29 @@ uint8_t Sensor_DataReady ( void )
     return DataReady;
 }
 
-void BME_GetData ( void )
-{
-    uint8_t RX_Buffer_CO2_Angled   [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
-    uint8_t RX_Buffer_CO2_Straight [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
+// void BME_GetData ( void )
+// {
+//     uint8_t RX_Buffer_CO2_Angled   [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
+//     uint8_t RX_Buffer_CO2_Straight [ 8 ] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , RX_Buffer_CO2_Angled   , 8 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , RX_Buffer_CO2_Straight , 8 , false );
+//     i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
+//     i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , BME_ADDRESS , RX_Buffer_CO2_Angled   , 8 , false );
+//     i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , &PRESS_MSB             , 1 , true  );
+//     i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , BME_ADDRESS , RX_Buffer_CO2_Straight , 8 , false );
 
-    Angled.BME_Humidity_Raw      = 0;
-    Angled.BME_Pressure_Raw      = 0;
-    Angled.BME_Temperature_Raw   = 0;
-    Angled.BME_Humidity_Raw      = ( uint16_t ) ( ( RX_Buffer_CO2_Angled   [ 6 ] <<  8 ) +   RX_Buffer_CO2_Angled   [ 7 ] );
-    Angled.BME_Pressure_Raw      = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 0 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 2 ] & 0xF0 ) >> 4 ) );
-    Angled.BME_Temperature_Raw   = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 3 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 5 ] & 0xF0 ) >> 4 ) );
-    Straight.BME_Humidity_Raw    = 0;
-    Straight.BME_Pressure_Raw    = 0;
-    Straight.BME_Temperature_Raw = 0;
-    Straight.BME_Humidity_Raw    = ( uint16_t ) ( ( RX_Buffer_CO2_Straight [ 6 ] <<  8 ) +   RX_Buffer_CO2_Straight [ 7 ] );
-    Straight.BME_Pressure_Raw    = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 0 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 2 ] & 0xF0 ) >> 4 ) );
-    Straight.BME_Temperature_Raw = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 3 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 5 ] & 0xF0 ) >> 4 ) );
-}
+//     Angled.BME_Humidity_Raw      = 0;
+//     Angled.BME_Pressure_Raw      = 0;
+//     Angled.BME_Temperature_Raw   = 0;
+//     Angled.BME_Humidity_Raw      = ( uint16_t ) ( ( RX_Buffer_CO2_Angled   [ 6 ] <<  8 ) +   RX_Buffer_CO2_Angled   [ 7 ] );
+//     Angled.BME_Pressure_Raw      = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 0 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 2 ] & 0xF0 ) >> 4 ) );
+//     Angled.BME_Temperature_Raw   = (  int32_t ) ( ( RX_Buffer_CO2_Angled   [ 3 ] << 12 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Angled   [ 5 ] & 0xF0 ) >> 4 ) );
+//     Straight.BME_Humidity_Raw    = 0;
+//     Straight.BME_Pressure_Raw    = 0;
+//     Straight.BME_Temperature_Raw = 0;
+//     Straight.BME_Humidity_Raw    = ( uint16_t ) ( ( RX_Buffer_CO2_Straight [ 6 ] <<  8 ) +   RX_Buffer_CO2_Straight [ 7 ] );
+//     Straight.BME_Pressure_Raw    = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 0 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 2 ] & 0xF0 ) >> 4 ) );
+//     Straight.BME_Temperature_Raw = (  int32_t ) ( ( RX_Buffer_CO2_Straight [ 3 ] << 12 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 4 ) + ( ( RX_Buffer_CO2_Straight [ 5 ] & 0xF0 ) >> 4 ) );
+// }
 
 void Sensor_GetData ( void )
 {
@@ -513,46 +514,46 @@ void Sensor_StartMeasurement ( void )
 
 
 
-void bmp280_init(i2c_inst_t *i2c) {
-    // use the "handheld device dynamic" optimal setting (see datasheet)
-    uint8_t buf[2];
+// void bmp280_init(i2c_inst_t *i2c) {
+//     // use the "handheld device dynamic" optimal setting (see datasheet)
+//     uint8_t buf[2];
 
-    // 500ms sampling time, x16 filter
-    const uint8_t reg_config_val = ((0x02 << 5) | (0x05 << 2)) & 0xFC;
+//     // 500ms sampling time, x16 filter
+//     const uint8_t reg_config_val = ((0x02 << 5) | (0x05 << 2)) & 0xFC;
 
-    // send register number followed by its corresponding value
-    buf[0] = REG_CONFIG;
-    buf[1] = reg_config_val;
-    i2c_write_blocking(i2c, ADDR, buf, 2, false);
+//     // send register number followed by its corresponding value
+//     buf[0] = REG_CONFIG;
+//     buf[1] = reg_config_val;
+//     i2c_write_blocking(i2c, ADDR, buf, 2, false);
 
-    // osrs_t x1, osrs_p x4, normal mode operation
-    const uint8_t reg_ctrl_meas_val = (0x01 << 5) | (0x03 << 2) | (0x03);
-    buf[0] = REG_CTRL_MEAS;
-    buf[1] = reg_ctrl_meas_val;
-    i2c_write_blocking(i2c, ADDR, buf, 2, false);
+//     // osrs_t x1, osrs_p x4, normal mode operation
+//     const uint8_t reg_ctrl_meas_val = (0x01 << 5) | (0x03 << 2) | (0x03);
+//     buf[0] = REG_CTRL_MEAS;
+//     buf[1] = reg_ctrl_meas_val;
+//     i2c_write_blocking(i2c, ADDR, buf, 2, false);
 
-    // osrs_h x4
-    const uint8_t reg_ctrl_hum_val = 0b0000011;//(0x01 << 5) | (0x03 << 2) | (0x03);
-    buf[0] = CTRL_HUM;
-    buf[1] = reg_ctrl_hum_val;
-    i2c_write_blocking(i2c, ADDR, buf, 2, false);
-}
+//     // osrs_h x4
+//     const uint8_t reg_ctrl_hum_val = 0b0000011;//(0x01 << 5) | (0x03 << 2) | (0x03);
+//     buf[0] = CTRL_HUM;
+//     buf[1] = reg_ctrl_hum_val;
+//     i2c_write_blocking(i2c, ADDR, buf, 2, false);
+// }
 
-void bmp280_read_raw(i2c_inst_t *i2c, int32_t* temp, int32_t* pressure,uint16_t* humidity) {
-    // BMP280 data registers are auto-incrementing and we have 3 temperature and
-    // pressure registers each and 2 humidity registers so we start at 0xF7 and read 8 bytes to 0xFE
-    // note: normal mode does not require further ctrl_meas and config register writes
+// void bmp280_read_raw(i2c_inst_t *i2c, int32_t* temp, int32_t* pressure,uint16_t* humidity) {
+//     // BMP280 data registers are auto-incrementing and we have 3 temperature and
+//     // pressure registers each and 2 humidity registers so we start at 0xF7 and read 8 bytes to 0xFE
+//     // note: normal mode does not require further ctrl_meas and config register writes
 
-    uint8_t buf[8];
-    uint8_t reg = REG_PRESSURE_MSB;
-    i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
-    i2c_read_blocking(i2c, ADDR, buf, 8, false);  // false - finished with bus
+//     uint8_t buf[8];
+//     uint8_t reg = REG_PRESSURE_MSB;
+//     i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
+//     i2c_read_blocking(i2c, ADDR, buf, 8, false);  // false - finished with bus
 
-    // store the 20 bit read in a 32 bit signed integer for conversion
-    *pressure = (buf[0] << 12) | (buf[1] << 4) | (buf[2] >> 4);
-    *temp = (buf[3] << 12) | (buf[4] << 4) | (buf[5] >> 4);
-    *humidity = (buf[6] << 8) | (buf[7]);
-}
+//     // store the 20 bit read in a 32 bit signed integer for conversion
+//     *pressure = (buf[0] << 12) | (buf[1] << 4) | (buf[2] >> 4);
+//     *temp = (buf[3] << 12) | (buf[4] << 4) | (buf[5] >> 4);
+//     *humidity = (buf[6] << 8) | (buf[7]);
+// }
 /*
 void bmp280_reset(i2c_inst_t *i2c) {
     // reset the device with the power-on-reset procedure
@@ -723,200 +724,200 @@ uint32_t bmp280_convert_humidity(uint16_t humidity, struct bmp280_calib_param* p
 
 // }
 
-void bmp280_get_calib_params(i2c_inst_t *i2c,struct bmp280_calib_param* params) {
-    // raw temp and pressure values need to be calibrated according to
-    // parameters generated during the manufacturing of the sensor
-    // there are 3 temperature params, and 9 pressure params, each with a LSB
-    // and MSB register, so we read from 24 registers
+// void bmp280_get_calib_params(i2c_inst_t *i2c,struct bmp280_calib_param* params) {
+//     // raw temp and pressure values need to be calibrated according to
+//     // parameters generated during the manufacturing of the sensor
+//     // there are 3 temperature params, and 9 pressure params, each with a LSB
+//     // and MSB register, so we read from 24 registers
 
-    uint8_t buf[NUM_CALIB_PARAMS] = { 0 };
-    uint8_t reg = REG_DIG_T1_LSB;
-    i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
-    // read in one go as register addresses auto-increment
-    i2c_read_blocking(i2c, ADDR, buf, 24, false);  // false, we're done reading
+//     uint8_t buf[NUM_CALIB_PARAMS] = { 0 };
+//     uint8_t reg = REG_DIG_T1_LSB;
+//     i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
+//     // read in one go as register addresses auto-increment
+//     i2c_read_blocking(i2c, ADDR, buf, 24, false);  // false, we're done reading
 
-    reg=REG_DIG_H1;
-    i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
-    i2c_read_blocking(i2c, ADDR, buf+24, 1, false);  // false, we're done reading
+//     reg=REG_DIG_H1;
+//     i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
+//     i2c_read_blocking(i2c, ADDR, buf+24, 1, false);  // false, we're done reading
 
-    reg=REG_DIG_H2_LSB;
-    i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
-    i2c_read_blocking(i2c, ADDR, buf+25, 7, false);  // false, we're done reading
+//     reg=REG_DIG_H2_LSB;
+//     i2c_write_blocking(i2c, ADDR, &reg, 1, true);  // true to keep master control of bus
+//     i2c_read_blocking(i2c, ADDR, buf+25, 7, false);  // false, we're done reading
 
-    // store these in a struct for later use
-    params->dig_t1 = (uint16_t)(buf[1] << 8) | buf[0];
-    params->dig_t2 = (int16_t)(buf[3] << 8) | buf[2];
-    params->dig_t3 = (int16_t)(buf[5] << 8) | buf[4];
+//     // store these in a struct for later use
+//     params->dig_t1 = (uint16_t)(buf[1] << 8) | buf[0];
+//     params->dig_t2 = (int16_t)(buf[3] << 8) | buf[2];
+//     params->dig_t3 = (int16_t)(buf[5] << 8) | buf[4];
 
-    params->dig_p1 = (uint16_t)(buf[7] << 8) | buf[6];
-    params->dig_p2 = (int16_t)(buf[9] << 8) | buf[8];
-    params->dig_p3 = (int16_t)(buf[11] << 8) | buf[10];
-    params->dig_p4 = (int16_t)(buf[13] << 8) | buf[12];
-    params->dig_p5 = (int16_t)(buf[15] << 8) | buf[14];
-    params->dig_p6 = (int16_t)(buf[17] << 8) | buf[16];
-    params->dig_p7 = (int16_t)(buf[19] << 8) | buf[18];
-    params->dig_p8 = (int16_t)(buf[21] << 8) | buf[20];
-    params->dig_p9 = (int16_t)(buf[23] << 8) | buf[22];
+//     params->dig_p1 = (uint16_t)(buf[7] << 8) | buf[6];
+//     params->dig_p2 = (int16_t)(buf[9] << 8) | buf[8];
+//     params->dig_p3 = (int16_t)(buf[11] << 8) | buf[10];
+//     params->dig_p4 = (int16_t)(buf[13] << 8) | buf[12];
+//     params->dig_p5 = (int16_t)(buf[15] << 8) | buf[14];
+//     params->dig_p6 = (int16_t)(buf[17] << 8) | buf[16];
+//     params->dig_p7 = (int16_t)(buf[19] << 8) | buf[18];
+//     params->dig_p8 = (int16_t)(buf[21] << 8) | buf[20];
+//     params->dig_p9 = (int16_t)(buf[23] << 8) | buf[22];
 
-    params->dig_h1 = (uint8_t)(buf[24]);
-    params->dig_h2 = (int16_t)(buf[26]<<8) | buf[25];
-    params->dig_h3 = (uint8_t)(buf[27]);
-    params->dig_h4 = (int16_t)(buf[28]<<4) + (buf[29]&0b00001111);
-    params->dig_h5 = (int16_t)(buf[30]<<4) + ((buf[29]&0b11110000)>>4);
-    params->dig_h6 = (uint8_t)(buf[31]);
-}
+//     params->dig_h1 = (uint8_t)(buf[24]);
+//     params->dig_h2 = (int16_t)(buf[26]<<8) | buf[25];
+//     params->dig_h3 = (uint8_t)(buf[27]);
+//     params->dig_h4 = (int16_t)(buf[28]<<4) + (buf[29]&0b00001111);
+//     params->dig_h5 = (int16_t)(buf[30]<<4) + ((buf[29]&0b11110000)>>4);
+//     params->dig_h6 = (uint8_t)(buf[31]);
+// }
 
-static int32_t compensate_temperature(int32_t temperature_raw,struct bmp280_calib_param* calib_data)
-{
-    int32_t var1;
-    int32_t var2;
-    int32_t temperature;
-    int32_t temperature_min = -4000;
-    int32_t temperature_max = 8500;
+// static int32_t compensate_temperature(int32_t temperature_raw,struct bmp280_calib_param* calib_data)
+// {
+//     int32_t var1;
+//     int32_t var2;
+//     int32_t temperature;
+//     int32_t temperature_min = -4000;
+//     int32_t temperature_max = 8500;
 
-    var1 = (int32_t)((temperature_raw / 8) - ((int32_t)calib_data->dig_t1 * 2));
-    var1 = (var1 * ((int32_t)calib_data->dig_t2)) / 2048;
-    var2 = (int32_t)((temperature_raw / 16) - ((int32_t)calib_data->dig_t1));
-    var2 = (((var2 * var2) / 4096) * ((int32_t)calib_data->dig_t3)) / 16384;
-    calib_data->t_fine = var1 + var2;
-    temperature = (calib_data->t_fine * 5 + 128) / 256;
+//     var1 = (int32_t)((temperature_raw / 8) - ((int32_t)calib_data->dig_t1 * 2));
+//     var1 = (var1 * ((int32_t)calib_data->dig_t2)) / 2048;
+//     var2 = (int32_t)((temperature_raw / 16) - ((int32_t)calib_data->dig_t1));
+//     var2 = (((var2 * var2) / 4096) * ((int32_t)calib_data->dig_t3)) / 16384;
+//     calib_data->t_fine = var1 + var2;
+//     temperature = (calib_data->t_fine * 5 + 128) / 256;
 
-    if (temperature < temperature_min)
-    {
-        temperature = temperature_min;
-    }
-    else if (temperature > temperature_max)
-    {
-        temperature = temperature_max;
-    }
+//     if (temperature < temperature_min)
+//     {
+//         temperature = temperature_min;
+//     }
+//     else if (temperature > temperature_max)
+//     {
+//         temperature = temperature_max;
+//     }
 
-    return temperature;
-}
+//     return temperature;
+// }
 
-static uint32_t compensate_pressure(int32_t pressure_raw,const struct bmp280_calib_param* calib_data)
-{
-    int32_t var1;
-    int32_t var2;
-    int32_t var3;
-    int32_t var4;
-    uint32_t var5;
-    uint32_t pressure;
-    uint32_t pressure_min = 30000;
-    uint32_t pressure_max = 110000;
+// static uint32_t compensate_pressure(int32_t pressure_raw,const struct bmp280_calib_param* calib_data)
+// {
+//     int32_t var1;
+//     int32_t var2;
+//     int32_t var3;
+//     int32_t var4;
+//     uint32_t var5;
+//     uint32_t pressure;
+//     uint32_t pressure_min = 30000;
+//     uint32_t pressure_max = 110000;
 
-    var1 = (((int32_t)calib_data->t_fine) / 2) - (int32_t)64000;
-    var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32_t)calib_data->dig_p6);
-    var2 = var2 + ((var1 * ((int32_t)calib_data->dig_p5)) * 2);
-    var2 = (var2 / 4) + (((int32_t)calib_data->dig_p4) * 65536);
-    var3 = (calib_data->dig_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) / 8;
-    var4 = (((int32_t)calib_data->dig_p2) * var1) / 2;
-    var1 = (var3 + var4) / 262144;
-    var1 = (((32768 + var1)) * ((int32_t)calib_data->dig_p1)) / 32768;
+//     var1 = (((int32_t)calib_data->t_fine) / 2) - (int32_t)64000;
+//     var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32_t)calib_data->dig_p6);
+//     var2 = var2 + ((var1 * ((int32_t)calib_data->dig_p5)) * 2);
+//     var2 = (var2 / 4) + (((int32_t)calib_data->dig_p4) * 65536);
+//     var3 = (calib_data->dig_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) / 8;
+//     var4 = (((int32_t)calib_data->dig_p2) * var1) / 2;
+//     var1 = (var3 + var4) / 262144;
+//     var1 = (((32768 + var1)) * ((int32_t)calib_data->dig_p1)) / 32768;
 
-    /* Avoid exception caused by division by zero */
-    if (var1)
-    {
-        var5 = (uint32_t)((uint32_t)1048576) - pressure_raw;
-        pressure = ((uint32_t)(var5 - (uint32_t)(var2 / 4096))) * 3125;
+//     /* Avoid exception caused by division by zero */
+//     if (var1)
+//     {
+//         var5 = (uint32_t)((uint32_t)1048576) - pressure_raw;
+//         pressure = ((uint32_t)(var5 - (uint32_t)(var2 / 4096))) * 3125;
 
-        if (pressure < 0x80000000)
-        {
-            pressure = (pressure << 1) / ((uint32_t)var1);
-        }
-        else
-        {
-            pressure = (pressure / (uint32_t)var1) * 2;
-        }
+//         if (pressure < 0x80000000)
+//         {
+//             pressure = (pressure << 1) / ((uint32_t)var1);
+//         }
+//         else
+//         {
+//             pressure = (pressure / (uint32_t)var1) * 2;
+//         }
 
-        var1 = (((int32_t)calib_data->dig_p9) * ((int32_t)(((pressure / 8) * (pressure / 8)) / 8192))) / 4096;
-        var2 = (((int32_t)(pressure / 4)) * ((int32_t)calib_data->dig_p8)) / 8192;
-        pressure = (uint32_t)((int32_t)pressure + ((var1 + var2 + calib_data->dig_p7) / 16));
+//         var1 = (((int32_t)calib_data->dig_p9) * ((int32_t)(((pressure / 8) * (pressure / 8)) / 8192))) / 4096;
+//         var2 = (((int32_t)(pressure / 4)) * ((int32_t)calib_data->dig_p8)) / 8192;
+//         pressure = (uint32_t)((int32_t)pressure + ((var1 + var2 + calib_data->dig_p7) / 16));
 
-        if (pressure < pressure_min)
-        {
-            pressure = pressure_min;
-        }
-        else if (pressure > pressure_max)
-        {
-            pressure = pressure_max;
-        }
-    }
-    else
-    {
-        pressure = pressure_min;
-    }
+//         if (pressure < pressure_min)
+//         {
+//             pressure = pressure_min;
+//         }
+//         else if (pressure > pressure_max)
+//         {
+//             pressure = pressure_max;
+//         }
+//     }
+//     else
+//     {
+//         pressure = pressure_min;
+//     }
 
-    return pressure;
-}
+//     return pressure;
+// }
 
-static uint16_t compensate_humidity(uint16_t humidity_raw,const struct bmp280_calib_param* calib_data)
-{
-    int32_t var1;
-    int32_t var2;
-    int32_t var3;
-    int32_t var4;
-    int32_t var5;
-    uint32_t humidity;
-    uint32_t humidity_max = 102400;
+// static uint16_t compensate_humidity(uint16_t humidity_raw,const struct bmp280_calib_param* calib_data)
+// {
+//     int32_t var1;
+//     int32_t var2;
+//     int32_t var3;
+//     int32_t var4;
+//     int32_t var5;
+//     uint32_t humidity;
+//     uint32_t humidity_max = 102400;
 
-    var1 = calib_data->t_fine - ((int32_t)76800);
-    var2 = (int32_t)(humidity_raw * 16384);
-    var3 = (int32_t)(((int32_t)calib_data->dig_h4) * 1048576);
-    var4 = ((int32_t)calib_data->dig_h5) * var1;
-    var5 = (((var2 - var3) - var4) + (int32_t)16384) / 32768;
-    var2 = (var1 * ((int32_t)calib_data->dig_h6)) / 1024;
-    var3 = (var1 * ((int32_t)calib_data->dig_h3)) / 2048;
-    var4 = ((var2 * (var3 + (int32_t)32768)) / 1024) + (int32_t)2097152;
-    var2 = ((var4 * ((int32_t)calib_data->dig_h2)) + 8192) / 16384;
-    var3 = var5 * var2;
-    var4 = ((var3 / 32768) * (var3 / 32768)) / 128;
-    var5 = var3 - ((var4 * ((int32_t)calib_data->dig_h1)) / 16);
-    // var5 = (var5 < 0 ? 0 : var5);
-    // var5 = (var5 > 419430400 ? 419430400 : var5);
-    if(var5<0)
-    {
-        var5=0;
-    }
-    else if (var5>419430400)
-    {
-        var5=419430400;
-    }
-    humidity = (uint32_t)(var5 / 4096);
+//     var1 = calib_data->t_fine - ((int32_t)76800);
+//     var2 = (int32_t)(humidity_raw * 16384);
+//     var3 = (int32_t)(((int32_t)calib_data->dig_h4) * 1048576);
+//     var4 = ((int32_t)calib_data->dig_h5) * var1;
+//     var5 = (((var2 - var3) - var4) + (int32_t)16384) / 32768;
+//     var2 = (var1 * ((int32_t)calib_data->dig_h6)) / 1024;
+//     var3 = (var1 * ((int32_t)calib_data->dig_h3)) / 2048;
+//     var4 = ((var2 * (var3 + (int32_t)32768)) / 1024) + (int32_t)2097152;
+//     var2 = ((var4 * ((int32_t)calib_data->dig_h2)) + 8192) / 16384;
+//     var3 = var5 * var2;
+//     var4 = ((var3 / 32768) * (var3 / 32768)) / 128;
+//     var5 = var3 - ((var4 * ((int32_t)calib_data->dig_h1)) / 16);
+//     // var5 = (var5 < 0 ? 0 : var5);
+//     // var5 = (var5 > 419430400 ? 419430400 : var5);
+//     if(var5<0)
+//     {
+//         var5=0;
+//     }
+//     else if (var5>419430400)
+//     {
+//         var5=419430400;
+//     }
+//     humidity = (uint32_t)(var5 / 4096);
 
-    if (humidity > humidity_max)
-    {
-        humidity = humidity_max;
-    }
+//     if (humidity > humidity_max)
+//     {
+//         humidity = humidity_max;
+//     }
 
-    return humidity;
+//     return humidity;
 
-    // double humidity;
-    // double humidity_min = 0.0;
-    // double humidity_max = 100.0;
-    // double var1;
-    // double var2;
-    // double var3;
-    // double var4;
-    // double var5;
-    // double var6;
+//     // double humidity;
+//     // double humidity_min = 0.0;
+//     // double humidity_max = 100.0;
+//     // double var1;
+//     // double var2;
+//     // double var3;
+//     // double var4;
+//     // double var5;
+//     // double var6;
 
-    // var1 = ((double)calib_data->t_fine) - 76800.0;
-    // var2 = (((double)calib_data->dig_h4) * 64.0 + (((double)calib_data->dig_h5) / 16384.0) * var1);
-    // var3 = humidity_raw - var2;
-    // var4 = ((double)calib_data->dig_h2) / 65536.0;
-    // var5 = (1.0 + (((double)calib_data->dig_h3) / 67108864.0) * var1);
-    // var6 = 1.0 + (((double)calib_data->dig_h6) / 67108864.0) * var1 * var5;
-    // var6 = var3 * var4 * (var5 * var6);
-    // humidity = var6 * (1.0 - ((double)calib_data->dig_h1) * var6 / 524288.0);
+//     // var1 = ((double)calib_data->t_fine) - 76800.0;
+//     // var2 = (((double)calib_data->dig_h4) * 64.0 + (((double)calib_data->dig_h5) / 16384.0) * var1);
+//     // var3 = humidity_raw - var2;
+//     // var4 = ((double)calib_data->dig_h2) / 65536.0;
+//     // var5 = (1.0 + (((double)calib_data->dig_h3) / 67108864.0) * var1);
+//     // var6 = 1.0 + (((double)calib_data->dig_h6) / 67108864.0) * var1 * var5;
+//     // var6 = var3 * var4 * (var5 * var6);
+//     // humidity = var6 * (1.0 - ((double)calib_data->dig_h1) * var6 / 524288.0);
 
-    // if (humidity > humidity_max)
-    // {
-    //     humidity = humidity_max;
-    // }
-    // else if (humidity < humidity_min)
-    // {
-    //     humidity = humidity_min;
-    // }
+//     // if (humidity > humidity_max)
+//     // {
+//     //     humidity = humidity_max;
+//     // }
+//     // else if (humidity < humidity_min)
+//     // {
+//     //     humidity = humidity_min;
+//     // }
 
-    // return humidity;
-}
+//     // return humidity;
+// }
