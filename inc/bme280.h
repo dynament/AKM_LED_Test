@@ -8,9 +8,9 @@
  * File Version:   	1.0.0                                                     *
  * Version history: 1.0.0 - 25/05/2023 - Craig Hemingway                      *
  *                      Initial release                                       *
- * Hardware:        Various                                                   *
- * Tools Used:      Visual Studio Code 1.78.2                                 *
- *                  Compiler: GCC 11.3.1 arm-none-eabi                        *
+ * Hardware:        RP2040                                                    *
+ * Tools Used:      Visual Studio Code -> 1.78.2                              *
+ *                  Compiler           -> GCC 11.3.1 arm-none-eabi            *
  ******************************************************************************/
 
 #ifndef __BME280_H
