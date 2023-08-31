@@ -73,6 +73,9 @@ src/CMakeFiles/src.dir/main.c.obj: \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info/defs.h \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info/structure.h \
  C:\VSARM\sdk\pico\pico-sdk\src\common\pico_binary_info\include/pico/binary_info/code.h \
+ C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_clocks\include/hardware/clocks.h \
+ C:\VSARM\sdk\pico\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/clocks.h \
+ C:\VSARM\sdk\pico\pico-sdk\src\rp2040\hardware_regs\include/hardware/regs/clocks.h \
  C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_pwm\include/hardware/pwm.h \
  C:\VSARM\sdk\pico\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/pwm.h \
  C:\VSARM\sdk\pico\pico-sdk\src\rp2040\hardware_regs\include/hardware/regs/pwm.h

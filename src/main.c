@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <pico/binary_info.h>
+#include <hardware/clocks.h>
 #include <hardware/pwm.h>
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,23 +32,23 @@ typedef struct
     int32_t  Sensor_REF_Reading;
 } datastruct_t;
 
-struct bme280_calib_param Params_Angled;
-struct bme280_calib_param Params_Straight;
-struct repeating_timer    timer_heartbeat;
-struct repeating_timer    timer_millisec;
+struct repeating_timer timer_millisec;
 
-datastruct_t Angled;
-datastruct_t Straight;
+datastruct_t Sensor;
 
 /* Private define ------------------------------------------------------------*/
 
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-const uint16_t TIMEOUT = 5000;
+const uint8_t  NUM_SAMPLES = 32;
+const uint16_t TIMEOUT     = 1000;
 uint16_t Timeout = 0;
 
 /* Private function prototypes -----------------------------------------------*/
+uint8_t LED_OnTime              ( uint16_t led_on_time );
+uint8_t LED_SetCurrent          ( uint8_t  led_current );
+uint8_t Measurement_SetTime     ( uint8_t  measurement_set_time );
 uint8_t Sensor_DataReady        ( void );
 void    Sensor_GetData          ( void );
 void    Sensor_GetLED_Voltage   ( void );
@@ -57,18 +58,6 @@ void    Sensor_SoftReset        ( void );
 void    Sensor_StartMeasurement ( void );
 
 /* User code -----------------------------------------------------------------*/
-static bool timer_heartbeat_isr ( struct repeating_timer *t )
-{
-    if ( gpio_get ( LED_PICO_PIN ) )
-    {
-        LED_PICO_OFF;
-    }
-    else
-    {
-        LED_PICO_ON;
-    }
-}
-
 static bool timer_millisec_isr ( struct repeating_timer *t )
 {
     if ( Timeout )
@@ -83,21 +72,9 @@ static bool timer_millisec_isr ( struct repeating_timer *t )
 
 void main ( void )
 {
-    int32_t  Pressure_Angled          = 0;
-    int32_t  Pressure_Straight        = 0;
-    int32_t  Raw_Pressure_Angled      = 0;
-    int32_t  Raw_Pressure_Straight    = 0;
-    int32_t  Raw_Temperature_Angled   = 0;
-    int32_t  Raw_Temperature_Straight = 0;
-    int32_t  Temperature_Angled       = 0;
-    int32_t  Temperature_Straight     = 0;
-    uint8_t  DataReady                = 0;
-    uint32_t PWM_DC                   = 0xFFFF;
-    uint16_t Humidity_Angled          = 0;
-    uint16_t Humidity_Straight        = 0;
-    uint16_t Raw_Humidity_Angled      = 0;
-    uint16_t Raw_Humidity_Straight    = 0;
-    
+    int32_t  Sensor_DET_ResultsArray [ 100 ];
+    uint8_t  DataCount = 0;
+    uint32_t Average   = 0;
 
     // Useful information for picotool
     bi_decl ( bi_program_description ( "RP2040 Premier" ) );
@@ -105,34 +82,17 @@ void main ( void )
     stdio_init_all();
 
     // GPIO
-    gpio_init    ( LED_PICO_PIN                );
-    gpio_init    ( PWM_OUT_PIN                 );
-    gpio_init    ( SENSOR_CO2_ANGLED_PDN_PIN   );
-    gpio_init    ( SENSOR_CO2_STRAIGHT_PDN_PIN );
-    gpio_set_dir ( LED_PICO_PIN                 , GPIO_OUT );
-    gpio_set_dir ( PWM_OUT_PIN                  , GPIO_OUT );
-    gpio_set_dir ( SENSOR_CO2_ANGLED_PDN_PIN    , GPIO_OUT );
-    gpio_set_dir ( SENSOR_CO2_STRAIGHT_PDN_PIN  , GPIO_OUT );
+    gpio_init    ( SENSOR_PDN_PIN            );
+    gpio_set_dir ( SENSOR_PDN_PIN , GPIO_OUT );
 
-    LED_PICO_OFF;
-    SENSOR_CO2_ANGLED_PDN_LOW;
-    SENSOR_CO2_STRAIGHT_PDN_LOW;
-    gpio_put ( PWM_OUT_PIN , 0 );
-
-    add_repeating_timer_ms ( 500 , timer_heartbeat_isr , NULL , &timer_heartbeat );
-    add_repeating_timer_ms (   1 , timer_millisec_isr  , NULL , &timer_millisec  );
+    add_repeating_timer_ms ( 1 , timer_millisec_isr , NULL , &timer_millisec  );
 
     // I2C
-    gpio_set_function ( SENSOR_CO2_ANGLED_I2C_SDA_PIN , GPIO_FUNC_I2C );
-    gpio_set_function ( SENSOR_CO2_ANGLED_I2C_SCL_PIN , GPIO_FUNC_I2C );
-    gpio_pull_up      ( SENSOR_CO2_ANGLED_I2C_SDA_PIN );
-    gpio_pull_up      ( SENSOR_CO2_ANGLED_I2C_SCL_PIN );
-    i2c_init          ( SENSOR_CO2_ANGLED_I2C , I2C_BAUD_RATE * 1000 );
-    gpio_set_function ( SENSOR_CO2_STRAIGHT_I2C_SDA_PIN , GPIO_FUNC_I2C );
-    gpio_set_function ( SENSOR_CO2_STRAIGHT_I2C_SCL_PIN , GPIO_FUNC_I2C );
-    gpio_pull_up      ( SENSOR_CO2_STRAIGHT_I2C_SDA_PIN );
-    gpio_pull_up      ( SENSOR_CO2_STRAIGHT_I2C_SCL_PIN );
-    i2c_init          ( SENSOR_CO2_STRAIGHT_I2C , I2C_BAUD_RATE * 1000 );
+    gpio_set_function ( SENSOR_I2C_SDA_PIN , GPIO_FUNC_I2C );
+    gpio_set_function ( SENSOR_I2C_SCL_PIN , GPIO_FUNC_I2C );
+    gpio_pull_up      ( SENSOR_I2C_SDA_PIN );
+    gpio_pull_up      ( SENSOR_I2C_SCL_PIN );
+    i2c_init          ( SENSOR_I2C_PORT , I2C_BAUD_RATE * 1000 );
 
     // UART
     uart_init         ( UART_PC         , UART_BAUD_RATE );
@@ -147,75 +107,57 @@ void main ( void )
     // irq_set_enabled           ( UART0_IRQ , true         );
     // uart_set_irq_enables      ( UART_PC   , true , false );  // Enable UART interrupt ( RX only )
 
-    gpio_set_function ( PWM_OUT_PIN , GPIO_FUNC_PWM );
-    uint8_t slice_num = pwm_gpio_to_slice_num ( PWM_OUT_PIN );
-    uint8_t channel   = pwm_gpio_to_channel   ( PWM_OUT_PIN );
-    pwm_set_wrap       ( slice_num , 0xFFFF );
-    pwm_set_chan_level ( slice_num , channel , ( uint16_t ) PWM_DC );
-    pwm_set_enabled    ( slice_num , true );
-
-    PWM_DC = 0;
+    SENSOR_PDN_LOW;
 	sleep_ms ( 1000 );
-
-    SENSOR_CO2_ANGLED_PDN_HIGH;
-    SENSOR_CO2_STRAIGHT_PDN_HIGH;
-
-    bme280_reset            ( SENSOR_CO2_ANGLED_I2C   );
-    bme280_reset            ( SENSOR_CO2_STRAIGHT_I2C );
-    bme280_init             ( SENSOR_CO2_ANGLED_I2C   );
-    bme280_init             ( SENSOR_CO2_STRAIGHT_I2C );
-    bme280_get_calib_params ( SENSOR_CO2_ANGLED_I2C   , &Params_Angled   );
-    bme280_get_calib_params ( SENSOR_CO2_STRAIGHT_I2C , &Params_Straight );
+    SENSOR_PDN_HIGH;
 
     for ( ; ; )
     {
-        DataReady = 0;
-        Timeout   = TIMEOUT;
-        memset ( &Angled   , 0 , sizeof ( Angled   ) );
-        memset ( &Straight , 0 , sizeof ( Straight ) );
+        Average = 0;
+        Timeout = TIMEOUT;
+        memset ( Sensor_DET_ResultsArray , 0 , sizeof ( Sensor_DET_ResultsArray ) );
+        memset ( &Sensor                 , 0 , sizeof ( Sensor )                  );
 
-        if ( PWM_DC == 0 )
+// Manually calculated average
+/*
+        for ( DataCount = 0 ; DataCount < NUM_SAMPLES ; DataCount++ )
         {
-            PWM_DC = 70000;
-        }
-        else
-        {
-            // Nothing to do
+            Sensor_SoftReset ( );
+            Sensor_Init ( );
+            Sensor_StartMeasurement ( );
+            sleep_ms ( 18 );   // ( Number of measurements * Time per measurement ) + minimum 10%
+
+            Sensor_GetData ( );
+
+            if ( 0x800000 > Sensor.Sensor_DET_Reading )
+            {
+                Sensor_DET_ResultsArray [ DataCount ] = Sensor.Sensor_DET_Reading;
+                Average += ( uint32_t ) ( Sensor.Sensor_DET_Reading );
+                printf ( "DET reading [ %2u ]  = %lu mV\n" , DataCount , ( uint32_t ) ( Sensor_DET_ResultsArray [ DataCount ] / 11185 ) );
+            }
+            else
+            {
+                Sensor_DET_ResultsArray [ DataCount ] = 0;
+                printf ( "DET reading [ %2u ]  = 0.000 mV\n" , DataCount );
+            }
         }
 
-        PWM_DC -= 10000;
-        pwm_set_chan_level ( slice_num , channel , ( uint16_t ) PWM_DC );
+        Average = ( uint32_t ) ( ( Average / 11185 ) / NUM_SAMPLES );
+        printf ( "DET reading average = %3lu mV\n" , ( uint32_t ) ( Average ) );
+        while ( Timeout );
+*/
 
-        sleep_ms ( 10 );
+// Automatically calculated average
+
         Sensor_SoftReset ( );
         Sensor_Init ( );
         Sensor_StartMeasurement ( );
-        sleep_ms ( 550 );
+        sleep_ms ( 550 );   // ( Number of measurements * Time per measurement ) + minimum 10%
 
-        DataReady = Sensor_DataReady ( );
+        Sensor_GetData ( );
 
-        Sensor_GetData          ( );
-        Sensor_GetLED_Voltage   ( );
-        Sensor_GetTemperature   ( );
+        printf ( "DET reading = %ld mV\n" , ( Sensor.Sensor_DET_Reading / 11184 ) );
 
-        Angled.Sensor_LED_Voltage_Display   = ( float ) ( ( Angled.Sensor_LED_Voltage    * 0.0458 ) + 1399.9 );
-        Straight.Sensor_LED_Voltage_Display = ( float ) ( ( Straight.Sensor_LED_Voltage  * 0.0458 ) + 1399.9 );
-
-        bme280_read_raw ( SENSOR_CO2_ANGLED_I2C   , &Raw_Temperature_Angled   , &Raw_Pressure_Angled   , &Raw_Humidity_Angled   );
-        bme280_read_raw ( SENSOR_CO2_STRAIGHT_I2C , &Raw_Temperature_Straight , &Raw_Pressure_Straight , &Raw_Humidity_Straight );
-        Temperature_Angled   = compensate_temperature ( Raw_Temperature_Angled   , &Params_Angled   );
-        Temperature_Straight = compensate_temperature ( Raw_Temperature_Straight , &Params_Straight );
-        Pressure_Angled      = compensate_pressure    ( Raw_Pressure_Angled      , &Params_Angled   );
-        Pressure_Straight    = compensate_pressure    ( Raw_Pressure_Straight    , &Params_Straight );
-        Humidity_Angled      = compensate_humidity    ( Raw_Humidity_Angled      , &Params_Angled   );
-        Humidity_Straight    = compensate_humidity    ( Raw_Humidity_Straight    , &Params_Straight );
-
-        printf ( "Temperature angled   = %.2f degC\n" , Temperature_Angled   / 100.f  );
-        printf ( "Temperature straight = %.2f degC\n" , Temperature_Straight / 100.f  );
-        printf ( "Pressure angled      = %.3f kPa\n"  , Pressure_Angled      / 1000.f );
-        printf ( "Pressure straight    = %.3f kPa\n"  , Pressure_Straight    / 1000.f );
-        printf ( "Humidity angled      = %.3f \%RH\n" , Humidity_Angled      / 1024.f );
-        printf ( "Humidity straight    = %.3f \%RH\n" , Humidity_Straight    / 1024.f );
     }
 }
 
@@ -261,15 +203,33 @@ uint8_t LED_SetCurrent   ( uint8_t  led_current )
     return LED_Current;
 }
 
+uint8_t Measurement_SetTime ( uint8_t measurement_set_time )
+{
+    uint8_t Measurement_Time = 0;
+
+    if ( measurement_set_time > 515 )
+    {
+        Measurement_Time = 0xFF;
+    }
+    else if ( measurement_set_time < 6 )
+    {
+        Measurement_Time = 0x00;
+    }
+    else
+    {
+        Measurement_Time = ( uint8_t ) ( ( measurement_set_time - 5 ) / 2 );
+    }
+
+    return Measurement_Time;
+}
+
 uint8_t Sensor_DataReady ( void )
 {
     uint8_t DataReady = 0;
     uint8_t RX_Buffer [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &STATUS       , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer     , 1 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &STATUS       , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer + 1 , 1 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , &STATUS   , 1 , true  );
+    i2c_read_blocking  ( SENSOR_I2C_PORT , SENSOR_ADDRESS , RX_Buffer , 1 , false );
 
     if ( RX_Buffer [ 0 ] & ( 1 << 0 ) )
     {
@@ -294,46 +254,33 @@ uint8_t Sensor_DataReady ( void )
 
 void Sensor_GetData ( void )
 {
-    uint8_t RX_Buffer_CO2_Angled   [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
-    uint8_t RX_Buffer_CO2_Straight [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
+    uint8_t RX_Buffer [ 6 ] = { 0 , 0 , 0 , 0 , 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &IR1L                  , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 6 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &IR1L                  , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 6 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , &IR1L     , 1 , true  );
+    i2c_read_blocking  ( SENSOR_I2C_PORT , SENSOR_ADDRESS , RX_Buffer , 6 , false );
 
-    Angled.Sensor_DET_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 2 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    Angled.Sensor_REF_Reading   = ( int32_t ) ( ( RX_Buffer_CO2_Angled   [ 5 ] << 16 ) + ( RX_Buffer_CO2_Angled   [ 4 ] << 8 ) + RX_Buffer_CO2_Angled   [ 3 ] );
-    Straight.Sensor_DET_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 2 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
-    Straight.Sensor_REF_Reading = ( int32_t ) ( ( RX_Buffer_CO2_Straight [ 5 ] << 16 ) + ( RX_Buffer_CO2_Straight [ 4 ] << 8 ) + RX_Buffer_CO2_Straight [ 3 ] );
+    Sensor.Sensor_DET_Reading = ( int32_t ) ( ( RX_Buffer [ 2 ] << 16 ) + ( RX_Buffer [ 1 ] << 8 ) + RX_Buffer [ 0 ] );
+    Sensor.Sensor_REF_Reading = ( int32_t ) ( ( RX_Buffer [ 5 ] << 16 ) + ( RX_Buffer [ 4 ] << 8 ) + RX_Buffer [ 3 ] );
 }
 
 void Sensor_GetLED_Voltage ( void )
 {
-    uint8_t RX_Buffer_CO2_Angled   [ 2 ] = { 0 , 0 };
-    uint8_t RX_Buffer_CO2_Straight [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &VFL                   , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &VFL                   , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , &VFL      , 1 , true  );
+    i2c_read_blocking  ( SENSOR_I2C_PORT , SENSOR_ADDRESS , RX_Buffer , 2 , false );
 
-    Angled.Sensor_LED_Voltage   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    Straight.Sensor_LED_Voltage = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    Sensor.Sensor_LED_Voltage = ( int16_t ) ( ( RX_Buffer [ 1 ] << 8 ) + RX_Buffer [ 0 ] );
 }
 
 void Sensor_GetTemperature ( void )
 {
-    uint8_t RX_Buffer_CO2_Angled   [ 2 ] = { 0 , 0 };
-    uint8_t RX_Buffer_CO2_Straight [ 2 ] = { 0 , 0 };
+    uint8_t RX_Buffer [ 2 ] = { 0 , 0 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , &TMPL                  , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , RX_Buffer_CO2_Angled   , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , &TMPL                  , 1 , true  );
-    i2c_read_blocking  ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , RX_Buffer_CO2_Straight , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , &TMPL     , 1 , true  );
+    i2c_read_blocking  ( SENSOR_I2C_PORT , SENSOR_ADDRESS , RX_Buffer , 2 , false );
 
-    Angled.Sensor_Temperature   = ( int16_t ) ( ( RX_Buffer_CO2_Angled   [ 1 ] << 8 ) + RX_Buffer_CO2_Angled   [ 0 ] );
-    Straight.Sensor_Temperature = ( int16_t ) ( ( RX_Buffer_CO2_Straight [ 1 ] << 8 ) + RX_Buffer_CO2_Straight [ 0 ] );
+    Sensor.Sensor_Temperature = ( int16_t ) ( ( RX_Buffer [ 1 ] << 8 ) + RX_Buffer [ 0 ] );
 }
 
 void Sensor_Init ( void )
@@ -342,53 +289,41 @@ void Sensor_Init ( void )
 
     // Number of measurements per cycle
     I2C_TX_Buffer [ 0 ] = CNTL1;
-    // I2C_TX_Buffer [ 1 ] = 0x03; // 8 measurements
-    I2C_TX_Buffer [ 1 ] = 0x02; // 4 measurements
-    // I2C_TX_Buffer [ 1 ] = 0x01; // 2 measurements
-    // I2C_TX_Buffer [ 1 ] = 0x00; // 1 measurement
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = NUM_MEAS_32;
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
-    // Measurement time
+    // Measurement time ( ms )
     I2C_TX_Buffer [ 0 ] = CNTL2;
-    // I2C_TX_Buffer [ 1 ] = 0xF7; // 500 ms
-    // I2C_TX_Buffer [ 1 ] = 0x7A; // 250 ms
-    I2C_TX_Buffer [ 1 ] = 0x3C; // 125 ms
-    // I2C_TX_Buffer [ 1 ] = 0x1D; //  63 ms
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    I2C_TX_Buffer [ 1 ] = Measurement_SetTime ( 15 );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // LED integration ( pulse width ( 'on' ) ) time ( us )
     I2C_TX_Buffer [ 0 ] = CNTL3;
     I2C_TX_Buffer [ 1 ] = LED_OnTime ( 1000 );
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // Analogue setup
     I2C_TX_Buffer [ 0 ] = CNTL7;
-    I2C_TX_Buffer [ 1 ] = 0b10000000;    // [7] <NOT USED> , [6] IR2 resolution = x1 , [5] IR1 resolution = x1 , [4] IR2 SH gain = x0.5 , [3] IR1 range = 1000 mV , [2] IR1 SH gain = x1, [1:0] IR1 AFE gain = x2
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    // I2C_TX_Buffer [ 1 ] = 0b1001100;    // [7] <NOT USED> , [6] IR2 resolution = x1 , [5] IR1 resolution = x1 , [4] IR2 SH gain = x0.5 , [3] IR1 range = 500 mV , [2] IR1 SH gain = x2, [1:0] IR1 AFE gain = x2
+    I2C_TX_Buffer [ 1 ] = TEST15;
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // LED current ( mA )
     I2C_TX_Buffer [ 0 ] = CNTL8;
     I2C_TX_Buffer [ 1 ] = LED_SetCurrent ( 100 );  // mA
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 
     // Operating mode ( normal or test )
     I2C_TX_Buffer [ 0 ] = CNTL9;
     I2C_TX_Buffer [ 1 ] = 0x00; // Normal operating mode
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
 
 void Sensor_SoftReset ( void )
 {
     uint8_t I2C_TX_Buffer [ 2 ] = { CNTL10 , 0x01 };
 
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
 
 void Sensor_StartMeasurement ( void )
@@ -397,8 +332,7 @@ void Sensor_StartMeasurement ( void )
 
     I2C_TX_Buffer [ 0 ] = CNTL6;
     I2C_TX_Buffer [ 1 ] = 0x02; // Single measurement mode
-    i2c_write_blocking ( SENSOR_CO2_ANGLED_I2C   , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
-    i2c_write_blocking ( SENSOR_CO2_STRAIGHT_I2C , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
+    i2c_write_blocking ( SENSOR_I2C_PORT , SENSOR_ADDRESS , I2C_TX_Buffer , 2 , false );
 }
 
 /* End of file ---------------------------------------------------------------*/

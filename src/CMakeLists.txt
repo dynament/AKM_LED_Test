@@ -9,6 +9,7 @@ pico_enable_stdio_uart(src 1)
 # pull in common dependencies
 target_link_libraries(src
         hardware_adc
+        hardware_clocks
         hardware_dma
         hardware_i2c
         hardware_irq

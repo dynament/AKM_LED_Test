@@ -333,38 +333,10 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/queue.c.s
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/queue.c.s"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\common\pico_util\queue.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\common\pico_util\queue.c.s
 
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: src/CMakeFiles/src.dir/flags.make
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c
-
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.i"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c > CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.i
-
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.s"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.s
-
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: src/CMakeFiles/src.dir/flags.make
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c
-
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.i"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c > CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.i
-
-src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.s"
-	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.s
-
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_clocks\clocks.c
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.i: cmake_force
@@ -378,7 +350,7 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_pll\pll.c
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.i: cmake_force
@@ -392,7 +364,7 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pl
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_vreg\vreg.c
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.i: cmake_force
@@ -406,7 +378,7 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/v
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.i: cmake_force
@@ -420,7 +392,7 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchd
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_xosc\xosc.c
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.i: cmake_force
@@ -430,6 +402,34 @@ src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/x
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.s"
 	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_xosc\xosc.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.s
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: src/CMakeFiles/src.dir/flags.make
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.i"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c > CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.i
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.s"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_dma\dma.c.s
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: src/CMakeFiles/src.dir/flags.make
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj: src/CMakeFiles/src.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj -MF CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.obj.d -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.obj -c C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.i"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c > CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.i
+
+src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.s"
+	cd /d C:\Users\craig.hemingway\VisualCode_Workspace\AKM_LED_Test\build\src && C:\VSARM\armcc\1142DA~1.3RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c -o CMakeFiles\src.dir\C_\VSARM\sdk\pico\pico-sdk\src\rp2_common\hardware_i2c\i2c.c.s
 
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: src/CMakeFiles/src.dir/flags.make
 src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: C:/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c
@@ -806,13 +806,13 @@ src_OBJECTS = \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/datetime.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/pheap.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/queue.c.obj" \
-"CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj" \
-"CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj" \
+"CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj" \
+"CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj" \
 "CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj" \
@@ -862,13 +862,13 @@ src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/ha
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/datetime.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/pheap.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/common/pico_util/queue.c.obj
-src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj
-src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj
+src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.obj
+src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
 src/src.elf: src/CMakeFiles/src.dir/C_/VSARM/sdk/pico/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj

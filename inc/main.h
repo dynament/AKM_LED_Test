@@ -60,31 +60,37 @@ const uint8_t CNTL8  = 0x16;    // LED current setting
 const uint8_t CNTL9  = 0x17;    // Operating mode
 const uint8_t CNTL10 = 0x18;    // Soft reset
 
-// GPIO
-#define LED_PICO_PIN                        25
-#define PWM_OUT_PIN                         14
-#define SENSOR_CO2_ANGLED_I2C_SCL_PIN       11
-#define SENSOR_CO2_ANGLED_I2C_SDA_PIN       10
-#define SENSOR_CO2_ANGLED_PDN_PIN            9
-#define SENSOR_CO2_STRAIGHT_I2C_SCL_PIN     13
-#define SENSOR_CO2_STRAIGHT_I2C_SDA_PIN     12
-#define SENSOR_CO2_STRAIGHT_PDN_PIN         15
-#define UART_PC_RX_PIN                       1
-#define UART_PC_TX_PIN                       0
+const uint8_t NUM_MEAS_1    = 0x00;
+const uint8_t NUM_MEAS_2    = 0x01;
+const uint8_t NUM_MEAS_4    = 0x02;
+const uint8_t NUM_MEAS_8    = 0x03;
+const uint8_t NUM_MEAS_16   = 0x04;
+const uint8_t NUM_MEAS_32   = 0x05;
+const uint8_t NUM_MEAS_64   = 0x06;
+const uint8_t NUM_MEAS_128  = 0x07;
+const uint8_t NUM_MEAS_256  = 0x08;
+const uint8_t NUM_MEAS_512  = 0x09;
+const uint8_t NUM_MEAS_1024 = 0x0A;
 
-#define LED_PICO_OFF                    gpio_put ( LED_PICO_PIN                , 0 )
-#define LED_PICO_ON                     gpio_put ( LED_PICO_PIN                , 1 )
-#define SENSOR_CO2_ANGLED_PDN_HIGH      gpio_put ( SENSOR_CO2_ANGLED_PDN_PIN   , 1 )
-#define SENSOR_CO2_ANGLED_PDN_LOW       gpio_put ( SENSOR_CO2_ANGLED_PDN_PIN   , 0 )
-#define SENSOR_CO2_STRAIGHT_PDN_HIGH    gpio_put ( SENSOR_CO2_STRAIGHT_PDN_PIN , 1 )
-#define SENSOR_CO2_STRAIGHT_PDN_LOW     gpio_put ( SENSOR_CO2_STRAIGHT_PDN_PIN , 0 )
+// GPIO
+// #define LED_PICO_PIN        25
+#define PWM_OUT_PIN         14
+#define SENSOR_I2C_SCL_PIN  27
+#define SENSOR_I2C_SDA_PIN  26
+#define SENSOR_PDN_PIN      25
+#define UART_PC_RX_PIN      17
+#define UART_PC_TX_PIN      16
+
+#define LED_PICO_OFF        gpio_put ( LED_PICO_PIN   , 0 )
+#define LED_PICO_ON         gpio_put ( LED_PICO_PIN   , 1 )
+#define SENSOR_PDN_HIGH     gpio_put ( SENSOR_PDN_PIN , 1 )
+#define SENSOR_PDN_LOW      gpio_put ( SENSOR_PDN_PIN , 0 )
 
 // I2C
-#define I2C_BAUD_RATE               100 // kHz
-#define I2C_BUFFER_LENGTH           10
-#define SENSOR_CO2_STRAIGHT_I2C     i2c0
-#define SENSOR_CO2_ANGLED_I2C       i2c1
-#define SENSOR_ADDRESS              0x65
+#define I2C_BAUD_RATE       100 // kHz
+#define I2C_BUFFER_LENGTH   10
+#define SENSOR_I2C_PORT     i2c1
+#define SENSOR_ADDRESS      0x65
 
 // UART
 #define DATA_BITS           8
@@ -94,6 +100,23 @@ const uint8_t CNTL10 = 0x18;    // Soft reset
 #define UART_BAUD_RATE      38400
 #define UART_BUFFER_LENGTH  500
 #define UART_TIMEOUT        1000
+
+const uint8_t TEST1  = 0b10000100;
+const uint8_t TEST2  = 0b10001100;
+const uint8_t TEST3  = 0b10000000;
+const uint8_t TEST4  = 0b10001000;
+const uint8_t TEST5  = 0b10000101;
+const uint8_t TEST6  = 0b10001101;
+const uint8_t TEST7  = 0b10000001;
+const uint8_t TEST8  = 0b10001001;
+const uint8_t TEST9  = 0b10000110;
+const uint8_t TEST10 = 0b10001110;
+const uint8_t TEST11 = 0b10000010;
+const uint8_t TEST12 = 0b10001010;
+const uint8_t TEST13 = 0b10000111;
+const uint8_t TEST14 = 0b10001111;
+const uint8_t TEST15 = 0b10000011;
+const uint8_t TEST16 = 0b10001011;
 
 #endif /* __MAIN_H */
 
